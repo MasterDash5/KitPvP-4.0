@@ -1,8 +1,8 @@
 package dashnetwork.kitpvp.listeners;
 
 import dashnetwork.core.bukkit.utils.MessageUtils;
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.kitpvp.kit.Kit;
-import dashnetwork.kitpvp.utils.GodDangitDashUtils;
 import org.bukkit.GameMode;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -42,6 +42,6 @@ public class SignListener implements Listener {
     }
 
     private String getLineText(Sign sign, int line) {
-        return GodDangitDashUtils.stripColor(sign.getLine(line).replace(" ", ""));
+        return ColorUtils.strip(sign.getLine(line).replace(" ", ""));
     }
 }

@@ -1,7 +1,7 @@
 package dashnetwork.kitpvp.listeners;
 
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.kitpvp.gui.KitMenu;
-import dashnetwork.kitpvp.utils.GodDangitDashUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,7 @@ public class NPCListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Entity entity = event.getRightClicked();
-        String name = GodDangitDashUtils.stripColor(entity.getName());
+        String name = ColorUtils.strip(entity.getName());
 
         if (entity.hasMetadata("NPC") && name.equals("Kit Selector")) {
             player.openInventory(KitMenu.getKitMenu());

@@ -1,10 +1,10 @@
 package dashnetwork.kitpvp.listeners;
 
 import dashnetwork.core.bukkit.utils.MessageUtils;
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.gui.KitMenu;
 import dashnetwork.kitpvp.kit.Kit;
-import dashnetwork.kitpvp.utils.GodDangitDashUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +29,7 @@ public class InventoryListener implements Listener {
                 MessageUtils.message(player, "&6&l» &7You can only use this in spawn!");
                 player.closeInventory();
             } else if (item.hasItemMeta()) {
-                String displayName = GodDangitDashUtils.stripColor(item.getItemMeta().getDisplayName());
+                String displayName = ColorUtils.strip(item.getItemMeta().getDisplayName());
                 Kit kit = Kit.getKit(displayName);
 
                 if (kit != null) {
