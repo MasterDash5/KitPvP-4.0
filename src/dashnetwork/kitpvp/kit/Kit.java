@@ -37,6 +37,11 @@ public abstract class Kit {
         return equipment;
     }
 
+    public void loadKit(Player player) {
+        equipment.loadKit(player);
+        addPlayer(player);
+    }
+
     public void addPlayer(Player player) {
         players.add(player.getUniqueId());
     }

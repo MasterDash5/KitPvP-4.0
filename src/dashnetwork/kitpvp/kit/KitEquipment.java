@@ -1,5 +1,6 @@
 package dashnetwork.kitpvp.kit;
 
+import dashnetwork.kitpvp.utils.KitUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class KitEquipment {
+
+    private final Kit kit;
 
     private final ItemStack weapon;
     private final ItemStack abilityItem;
@@ -23,7 +26,8 @@ public class KitEquipment {
 
     private final Map<Integer, ItemStack> miscellaneousItems;
 
-    public KitEquipment(ItemStack weapon, ItemStack abilityItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
+    public KitEquipment(Kit kit, ItemStack weapon, ItemStack abilityItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
+        this.kit = kit;
         this.weapon = weapon;
         this.abilityItem = abilityItem;
 
@@ -35,6 +39,10 @@ public class KitEquipment {
         this.potionEffects = potionEffects;
 
         this.miscellaneousItems = miscellaneousItems;
+    }
+
+    public Kit getKit() {
+        return kit;
     }
 
     public ItemStack getWeapon() {
@@ -58,13 +66,10 @@ public class KitEquipment {
     }
 
     public void loadKit(Player player) {
-        player.setMaxHealth(20.0D);
-        player.setHealth(20.0D);
-        player.setFoodLevel(20);
-        player.setSaturation(20.0F);
+        KitUtils.refresh(player);
+        KitUtils.setSurvival(player);
 
         PlayerInventory inventory = player.getInventory();
-        inventory.clear();
         inventory.setArmorContents(getArmorContents());
 
         if (weapon != null)
