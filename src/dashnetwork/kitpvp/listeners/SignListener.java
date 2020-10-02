@@ -32,10 +32,9 @@ public class SignListener implements Listener {
             if (name.equals("[Kit]")) {
                 Kit kit = Kit.getKit(value);
 
-                if (kit != null) {
-                    kit.loadKit(player, action.contains("LEFT"));
-                    MessageUtils.message(player, "&6&l» &7You have been given &c" + kit.getName() + "&7!");
-                } else
+                if (kit != null)
+                    kit.loadKit(player, action.contains("RIGHT"));
+                else
                     MessageUtils.message(player, "&6&l» &7This kit sign is broken!");
             }
         }

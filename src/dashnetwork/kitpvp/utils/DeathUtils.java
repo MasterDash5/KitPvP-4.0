@@ -2,6 +2,7 @@ package dashnetwork.kitpvp.utils;
 
 import dashnetwork.core.bukkit.utils.MessageUtils;
 import dashnetwork.core.bukkit.utils.PermissionType;
+import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.kitpvp.KitPvP;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -22,31 +23,30 @@ public class DeathUtils {
     }
 
     private static void deathMessage(Player player, Player killer) {
-        EntityDamageEvent.DamageCause lastCause = player.getLastDamageCause().getCause();
+        EntityDamageEvent.DamageCause lastCause = player.getLastDamageCause() == null ? null : player.getLastDamageCause().getCause();
         MessageBuilder builder = new MessageBuilder();
 
-        builder.append("&6&l» &6");
-        builder.append(player.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());
-        builder.append("&7 ");
+        builder.append("&6&l» ");
+        builder.append(User.getUser(player).getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());
 
         if (lastCause == EntityDamageEvent.DamageCause.FIRE || lastCause == EntityDamageEvent.DamageCause.FIRE_TICK)
-            builder.append("was burnt to death by");
+            builder.append(" &7was burnt to death by ");
         else if (lastCause == EntityDamageEvent.DamageCause.LAVA)
-            builder.append("tried to swim in lava to escape");
+            builder.append(" &7tried to swim in lava to escape ");
         else if (lastCause == EntityDamageEvent.DamageCause.DROWNING)
-            builder.append("drowned to escape");
+            builder.append(" &7drowned to escape ");
         else if (lastCause == EntityDamageEvent.DamageCause.STARVATION)
-            builder.append("starved to death whilst fighting");
+            builder.append(" &7starved to death whilst fighting ");
         else if (lastCause == EntityDamageEvent.DamageCause.THORNS)
-            builder.append("died trying to hurt");
+            builder.append(" &7died trying to hurt ");
         else if (lastCause == EntityDamageEvent.DamageCause.PROJECTILE)
-            builder.append("was shot by");
+            builder.append(" &7was shot by ");
         else if (lastCause == EntityDamageEvent.DamageCause.CUSTOM)
-            builder.append("got shit on by");
+            builder.append(" &7got shit on by ");
         else
-            builder.append("has been slain by");
+            builder.append(" &7has been slain by ");
 
-        builder.append("&6 " + killer.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + killer.getName());
+        builder.append(User.getUser(killer).getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + killer.getName());
         builder.append("&7.");
 
         MessageUtils.broadcast(PermissionType.NONE, builder.build());

@@ -1,5 +1,7 @@
 package dashnetwork.kitpvp.kit;
 
+import dashnetwork.core.bukkit.utils.ItemMaker;
+import dashnetwork.core.bukkit.utils.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,8 +17,8 @@ public abstract class Kit {
 
     private static final List<Kit> kits = new ArrayList<>();
 
-    public Kit(ItemStack displayItem) {
-        this.displayItem = displayItem;
+    public Kit(ItemMaker displayItem) {
+        this.displayItem = displayItem.name("&c" + getName()).build();
         this.equipment = setupEquipment();
         this.players = new ArrayList<>();
 
@@ -26,7 +28,7 @@ public abstract class Kit {
     public abstract KitEquipment setupEquipment();
 
     public String getName() {
-        return getClass().getName().split("Kit")[0];
+        return getClass().getName().split("Kit")[1];
     }
 
     public ItemStack getDisplayItem() {
@@ -39,6 +41,7 @@ public abstract class Kit {
 
     public void loadKit(Player player, boolean potions) {
         equipment.loadKit(player, potions);
+        MessageUtils.message(player, "&6&l» &7You have been given the &c" + getName() + "&7 kit.");
         addPlayer(player);
     }
 

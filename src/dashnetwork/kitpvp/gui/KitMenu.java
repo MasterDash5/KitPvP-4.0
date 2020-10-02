@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class KitMenu {
 
-    private static final Inventory inventory = Bukkit.createInventory(null, 18, "Select a Kit");
+    private static final Inventory inventory = Bukkit.createInventory(null, 27, "Select a Kit");
 
     static {
         int slot = 0;
@@ -19,9 +19,9 @@ public class KitMenu {
             slot++;
         }
 
-        inventory.setItem(17, new ItemMaker(Material.REDSTONE).name("&cClear Inventory").build());
+        inventory.setItem(inventory.getSize() - 1, new ItemMaker(Material.REDSTONE).name("&cClear Inventory").build());
 
-        ItemStack filler = new ItemMaker(Material.STAINED_GLASS_PANE).name(" ").build();
+        ItemStack filler = new ItemMaker(Material.STAINED_GLASS_PANE).name("&6Left Click for Soup, Right Click for Potions").build();
         filler.setDurability((short) 7);
 
         for (int i = 0; i < inventory.getSize(); i++)

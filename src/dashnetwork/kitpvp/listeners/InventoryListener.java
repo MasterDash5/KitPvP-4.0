@@ -30,18 +30,20 @@ public class InventoryListener implements Listener {
                 player.closeInventory();
             } else if (item.hasItemMeta()) {
                 String displayName = ColorUtils.strip(item.getItemMeta().getDisplayName());
-                Kit kit = Kit.getKit(displayName);
 
-                if (kit != null) {
-                    kit.loadKit(player, event.getClick().isLeftClick());
-                    player.closeInventory();
-                    MessageUtils.message(player, "&6&l» &7You have been given the &6" + kit.getName() + "&7 kit.");
-                } else if (displayName.equals("Clear Inventory")) {
+                if (displayName.equals("Clear Inventory")) {
                     PlayerInventory inventory = player.getInventory();
                     inventory.setArmorContents(null);
                     inventory.clear();
 
                     player.updateInventory();
+                } else {
+                    Kit kit = Kit.getKit(displayName);
+
+                    if (kit != null) {
+                        kit.loadKit(player, event.getClick().isRightClick());
+                        player.closeInventory();
+                    }
                 }
             }
         }

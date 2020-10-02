@@ -8,22 +8,12 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class ProjectileListener implements Listener {
 
     private final KitPvP plugin = KitPvP.getInstance();
-
-    @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        Projectile projectile = event.getEntity();
-        Player shooter = (Player) projectile.getShooter();
-
-        if ((shooter != null && plugin.isInSpawn(shooter)) || plugin.isInSpawn(projectile.getLocation()))
-            event.setCancelled(true);
-    }
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {

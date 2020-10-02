@@ -9,8 +9,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,12 +20,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CombatTimerListener implements Listener {
+public class CombatListener implements Listener {
 
     private static final Map<UUID, Double> combatTimer = new ConcurrentHashMap<>();
     private static final Map<UUID, UUID> combatTarget = new ConcurrentHashMap<>();
 
-    public CombatTimerListener() {
+    public CombatListener() {
         new BukkitRunnable() {
 
             @Override
@@ -45,7 +47,7 @@ public class CombatTimerListener implements Listener {
         }.runTaskTimerAsynchronously(KitPvP.getInstance(), 0L, 1L);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Player player = (Player) event.getEntity();
         double finalDamage = event.getFinalDamage();
@@ -80,6 +82,24 @@ public class CombatTimerListener implements Listener {
 
         if (player.getHealth() - finalDamage <= 0.0D) {
             DeathUtils.death(player, damagerUuid == null ? Bukkit.getPlayer(combatTarget.get(playerUuid)) : Bukkit.getPlayer(damagerUuid));
+
+            combatTimer.remove(playerUuid);
+            combatTarget.remove(playerUuid);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onEntityDamage(EntityDamageEvent event) {
+        Player player = (Player) event.getEntity();
+        double finalDamage = event.getFinalDamage();
+
+        if (finalDamage <= 0.0D || player == null || DuelsAPI.isInDuel(player))
+            return;
+
+        if (player.getHealth() - finalDamage <= 0.0D && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            UUID playerUuid = player.getUniqueId();
+
+            DeathUtils.death(player, Bukkit.getPlayer(combatTarget.get(playerUuid)));
 
             combatTimer.remove(playerUuid);
             combatTarget.remove(playerUuid);

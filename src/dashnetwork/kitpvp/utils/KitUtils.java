@@ -13,10 +13,11 @@ public class KitUtils {
     private static final Potion potion = new Potion(PotionType.INSTANT_HEAL, 2).splash();
 
     public static void refresh(Player player) {
-        player.setMaxHealth(20.0D);
-        player.setHealth(20.0D);
+        player.setFireTicks(-20);
         player.setFoodLevel(20);
         player.setSaturation(20.0F);
+        player.setHealth(20.0D);
+        player.setMaxHealth(20.0D);
 
         PlayerInventory inventory = player.getInventory();
         inventory.setArmorContents(null);

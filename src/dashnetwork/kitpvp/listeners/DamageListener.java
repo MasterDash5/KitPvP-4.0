@@ -1,9 +1,11 @@
 package dashnetwork.kitpvp.listeners;
 
+import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.api.DuelsAPI;
 import dashnetwork.kitpvp.utils.KitUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -19,9 +21,12 @@ public class DamageListener implements Listener {
             KitUtils.setSurvival(damager);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
+            event.setCancelled(true);
+
+        if (KitPvP.getInstance().isInSpawn(event.getEntity().getLocation()))
             event.setCancelled(true);
     }
 

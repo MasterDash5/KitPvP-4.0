@@ -18,6 +18,12 @@ public class CommandListener implements Listener {
         String message = event.getMessage().toLowerCase();
         KitPvP plugin = KitPvP.getInstance();
 
+        if (CombatListener.isInCombat(player)) {
+            event.setCancelled(true);
+            MessageUtils.message(player, "&6&l» &7You can't do that while in combat! (&c" + CombatListener.getCombatTime(player) + "s&7)");
+            return;
+        }
+
         if ((LazyUtils.anyEquals(message, "/kit", "/kits") || message.startsWith("/kit ") || message.startsWith("/kits "))) {
             event.setCancelled(true);
 

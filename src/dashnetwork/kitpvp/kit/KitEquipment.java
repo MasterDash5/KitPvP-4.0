@@ -50,7 +50,7 @@ public class KitEquipment {
     }
 
     public ItemStack[] getArmorContents() {
-        return new ItemStack[]{helmet, chestplate, leggings, boots};
+        return new ItemStack[]{boots, leggings, chestplate, helmet};
     }
 
     public List<PotionEffect> getPotionEffects() {
@@ -88,7 +88,7 @@ public class KitEquipment {
             for (PotionEffect effect : potionEffects)
                 player.addPotionEffect(effect);
 
-        for (int i = 0; i < 35; i++)
+        for (int i = 0; i < 36; i++)
             if (inventory.getItem(i) == null)
                 inventory.setItem(i, potions ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP));
 
