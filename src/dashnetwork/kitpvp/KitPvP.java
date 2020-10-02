@@ -5,7 +5,7 @@ import dashnetwork.kitpvp.listeners.*;
 import dashnetwork.kitpvp.utils.StatsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -64,8 +64,8 @@ public class KitPvP extends JavaPlugin {
         return spawn;
     }
 
-    public boolean isInSpawn(Player player) {
-        return isInSpawn(player.getLocation());
+    public boolean isInSpawn(Entity entity) {
+        return isInSpawn(entity.getLocation());
     }
 
     public boolean isInSpawn(Location location) {

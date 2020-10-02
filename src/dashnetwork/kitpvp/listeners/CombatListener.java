@@ -81,6 +81,8 @@ public class CombatListener implements Listener {
         }
 
         if (player.getHealth() - finalDamage <= 0.0D) {
+            event.setCancelled(true);
+
             DeathUtils.death(player, damagerUuid == null ? Bukkit.getPlayer(combatTarget.get(playerUuid)) : Bukkit.getPlayer(damagerUuid));
 
             combatTimer.remove(playerUuid);
@@ -97,6 +99,8 @@ public class CombatListener implements Listener {
             return;
 
         if (player.getHealth() - finalDamage <= 0.0D && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            event.setCancelled(true);
+
             UUID playerUuid = player.getUniqueId();
 
             DeathUtils.death(player, Bukkit.getPlayer(combatTarget.get(playerUuid)));

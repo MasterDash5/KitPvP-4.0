@@ -1,6 +1,7 @@
 package dashnetwork.kitpvp.listeners;
 
 import dashnetwork.core.bukkit.utils.MessageUtils;
+import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.LazyUtils;
 import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.gui.KitMenu;
@@ -18,7 +19,7 @@ public class CommandListener implements Listener {
         String message = event.getMessage().toLowerCase();
         KitPvP plugin = KitPvP.getInstance();
 
-        if (CombatListener.isInCombat(player)) {
+        if (!User.getUser(player).isOwner() && CombatListener.isInCombat(player)) {
             event.setCancelled(true);
             MessageUtils.message(player, "&6&l» &7You can't do that while in combat! (&c" + CombatListener.getCombatTime(player) + "s&7)");
             return;

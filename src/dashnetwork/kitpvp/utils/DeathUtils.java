@@ -13,10 +13,10 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class DeathUtils {
 
     public static void death(Player player, Player killer) {
+        player.teleport(KitPvP.getInstance().getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+
         KitUtils.refresh(player);
         KitUtils.setSurvival(player);
-
-        player.teleport(KitPvP.getInstance().getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
         if (killer != null)
             deathMessage(player, killer);

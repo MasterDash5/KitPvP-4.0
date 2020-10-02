@@ -18,7 +18,7 @@ public abstract class Kit {
     private static final List<Kit> kits = new ArrayList<>();
 
     public Kit(ItemMaker displayItem) {
-        this.displayItem = displayItem.name("&c" + getName()).build();
+        this.displayItem = displayItem.name("&a" + getName()).build();
         this.equipment = setupEquipment();
         this.players = new ArrayList<>();
 

@@ -13,8 +13,8 @@ public class HungerListener implements Listener {
         Player player = (Player) event.getEntity();
 
         if (KitPvP.getInstance().isInSpawn(player)) {
-            event.setFoodLevel(20);
             event.setCancelled(true);
+            event.setFoodLevel(20);
         }
     }
 }

@@ -19,8 +19,10 @@ public class SoupListener implements Listener {
         if (player.getGameMode() != GameMode.CREATIVE && event.getAction().name().contains("RIGHT")) {
             ItemStack hand = inventory.getItemInHand();
 
-            if (hand != null && hand.getType() == Material.MUSHROOM_SOUP && useSoup(player))
+            if (hand != null && hand.getType() == Material.MUSHROOM_SOUP && useSoup(player)) {
+                event.setCancelled(true);
                 inventory.setItemInHand(new ItemStack(Material.BOWL));
+            }
         }
     }
 
@@ -28,7 +30,7 @@ public class SoupListener implements Listener {
         double health = player.getHealth();
         double maxHealth = player.getMaxHealth();
 
-        if (health < maxHealth) {
+        if (Math.round(health) < maxHealth) {
             player.setHealth(Math.min(health + 7.0D, maxHealth));
             return true;
         }

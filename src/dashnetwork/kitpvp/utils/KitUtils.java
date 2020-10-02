@@ -13,7 +13,6 @@ public class KitUtils {
     private static final Potion potion = new Potion(PotionType.INSTANT_HEAL, 2).splash();
 
     public static void refresh(Player player) {
-        player.setFireTicks(-20);
         player.setFoodLevel(20);
         player.setSaturation(20.0F);
         player.setHealth(20.0D);
