@@ -9,7 +9,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SignListener implements Listener {
@@ -17,26 +16,27 @@ public class SignListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Action action = event.getAction();
+        String action = event.getAction().name();
 
-        if (action.name().contains("BLOCK") && player.getGameMode() != GameMode.CREATIVE) {
+        if (action.contains("BLOCK") && player.getGameMode() != GameMode.CREATIVE) {
             BlockState state = event.getClickedBlock().getState();
 
-            if (state instanceof Sign) {
-                Sign sign = (Sign) state;
+            if (!(state instanceof Sign))
+                return;
 
-                String name = getLineText(sign, 0);
-                String value = getLineText(sign, 1);
+            Sign sign = (Sign) state;
 
-                if (name.equals("[Kit]")) {
-                    Kit kit = Kit.getKit(value);
+            String name = getLineText(sign, 0);
+            String value = getLineText(sign, 1);
 
-                    if (kit != null) {
-                        kit.loadKit(player);
-                        MessageUtils.message(player, "&6&l» &7You have been given &c" + kit.getName() + "&7!");
-                    } else
-                        MessageUtils.message(player, "&6&l» &7This kit sign is broken!");
-                }
+            if (name.equals("[Kit]")) {
+                Kit kit = Kit.getKit(value);
+
+                if (kit != null) {
+                    kit.loadKit(player, action.contains("LEFT"));
+                    MessageUtils.message(player, "&6&l» &7You have been given &c" + kit.getName() + "&7!");
+                } else
+                    MessageUtils.message(player, "&6&l» &7This kit sign is broken!");
             }
         }
     }

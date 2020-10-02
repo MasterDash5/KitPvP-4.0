@@ -1,18 +1,18 @@
 package dashnetwork.kitpvp.kit;
 
 import dashnetwork.kitpvp.utils.KitUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class KitEquipment {
-
-    private final Kit kit;
 
     private final ItemStack weapon;
     private final ItemStack abilityItem;
@@ -26,8 +26,7 @@ public class KitEquipment {
 
     private final Map<Integer, ItemStack> miscellaneousItems;
 
-    public KitEquipment(Kit kit, ItemStack weapon, ItemStack abilityItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
-        this.kit = kit;
+    public KitEquipment(ItemStack weapon, ItemStack abilityItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
         this.weapon = weapon;
         this.abilityItem = abilityItem;
 
@@ -38,11 +37,8 @@ public class KitEquipment {
 
         this.potionEffects = potionEffects;
 
-        this.miscellaneousItems = miscellaneousItems;
-    }
-
-    public Kit getKit() {
-        return kit;
+        this.miscellaneousItems = (miscellaneousItems == null ? new HashMap<>() : miscellaneousItems);
+        this.miscellaneousItems.put(8, new ItemStack(Material.COOKED_BEEF, 64));
     }
 
     public ItemStack getWeapon() {
@@ -65,7 +61,7 @@ public class KitEquipment {
         return miscellaneousItems;
     }
 
-    public void loadKit(Player player) {
+    public void loadKit(Player player, boolean potions) {
         KitUtils.refresh(player);
         KitUtils.setSurvival(player);
 
@@ -91,6 +87,10 @@ public class KitEquipment {
         if (potionEffects != null)
             for (PotionEffect effect : potionEffects)
                 player.addPotionEffect(effect);
+
+        for (int i = 0; i < 35; i++)
+            if (inventory.getItem(i) == null)
+                inventory.setItem(i, potions ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP));
 
         player.updateInventory();
     }

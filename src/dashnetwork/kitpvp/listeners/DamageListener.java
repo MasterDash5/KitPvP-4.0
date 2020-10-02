@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DamageListener implements Listener {
 
@@ -15,5 +17,17 @@ public class DamageListener implements Listener {
 
         if (damager != null && event.getFinalDamage() > 0.0D && !DuelsAPI.isInDuel(damager))
             KitUtils.setSurvival(damager);
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        event.setDeathMessage(null);
+        event.setDroppedExp(0);
     }
 }

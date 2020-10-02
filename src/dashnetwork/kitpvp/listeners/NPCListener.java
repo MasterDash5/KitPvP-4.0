@@ -16,8 +16,7 @@ public class NPCListener implements Listener {
         Entity entity = event.getRightClicked();
         String name = ColorUtils.strip(entity.getName());
 
-        if (entity.hasMetadata("NPC") && name.equals("Kit Selector")) {
+        if (entity.hasMetadata("NPC") && name.equals("Kit Selector"))
             player.openInventory(KitMenu.getKitMenu());
-        }
     }
 }

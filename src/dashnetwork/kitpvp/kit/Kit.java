@@ -37,8 +37,8 @@ public abstract class Kit {
         return equipment;
     }
 
-    public void loadKit(Player player) {
-        equipment.loadKit(player);
+    public void loadKit(Player player, boolean potions) {
+        equipment.loadKit(player, potions);
         addPlayer(player);
     }
 
