@@ -5,22 +5,20 @@ import dashnetwork.core.bukkit.utils.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Kit {
 
     private final ItemStack displayItem;
     private final KitEquipment equipment;
-    private final List<UUID> players;
+    private final Map<UUID, Boolean> players;
 
     private static final List<Kit> kits = new ArrayList<>();
 
     public Kit(ItemMaker displayItem) {
         this.displayItem = displayItem.name("&a" + getName()).build();
         this.equipment = setupEquipment();
-        this.players = new ArrayList<>();
+        this.players = new HashMap<>();
 
         kits.add(this);
     }
@@ -42,18 +40,26 @@ public abstract class Kit {
     public void loadKit(Player player, boolean potions) {
         equipment.loadKit(player, potions);
         MessageUtils.message(player, "&6&l» &7You have been given the &c" + getName() + "&7 kit.");
-        addPlayer(player);
+        addPlayer(player, potions);
     }
 
-    public void addPlayer(Player player) {
-        players.add(player.getUniqueId());
+    public void addPlayer(Player player, boolean potions) {
+        players.put(player.getUniqueId(), potions);
+    }
+
+    public boolean isUsingSoup(Player player) {
+        return players.getOrDefault(player.getUniqueId(), true);
+    }
+
+    public boolean isUsingPotions(Player player) {
+        return !isUsingSoup(player);
     }
 
     public void removePlayer(Player player) {
         players.remove(player.getUniqueId());
     }
 
-    public List<UUID> getPlayers() {
+    public Map<UUID, Boolean> getPlayers() {
         return players;
     }
 
@@ -67,7 +73,7 @@ public abstract class Kit {
 
     public static Kit getPlayerKit(Player player) {
         for (Kit kit : kits)
-            if (kit.getPlayers().contains(player.getUniqueId()))
+            if (kit.getPlayers().containsKey(player.getUniqueId()))
                 return kit;
 
         return null;

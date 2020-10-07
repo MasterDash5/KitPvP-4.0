@@ -6,6 +6,8 @@ import dashnetwork.kitpvp.KitPvP;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -13,6 +15,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener implements Listener {
@@ -24,16 +29,19 @@ public class BlockListener implements Listener {
         Action action = event.getAction();
         Block block = event.getClickedBlock();
 
-        if (KitPvP.getInstance().isInSpawn(player) && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
-            event.setUseItemInHand(Event.Result.DENY);
+        if (KitPvP.getInstance().isInSpawn(player) && player.getGameMode() != GameMode.CREATIVE && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
+            event.setCancelled(true);
             player.updateInventory();
         }
 
-        if (!user.isAdmin() && action == Action.PHYSICAL) {
+        if (!user.isAdmin() && player.getGameMode() != GameMode.CREATIVE && action.name().contains("LEFT") && block != null && block.getType() == Material.FIRE)
+            event.setUseInteractedBlock(Event.Result.DENY);
+
+        if (!user.isAdmin() && player.getGameMode() != GameMode.CREATIVE && action == Action.PHYSICAL) {
             Material type = event.getClickedBlock().getType();
 
             if (!LazyUtils.anyContains(type.name(), "PLATE", "TRIPWIRE"))
-                event.setCancelled(true);
+                event.setUseInteractedBlock(Event.Result.DENY);
         }
     }
 
@@ -51,10 +59,45 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         User user = User.getUser(player);
 
+        if (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE) {
+            event.setCancelled(true);
+            event.getBlock().getDrops().clear();
+            event.setExpToDrop(0);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        User user = User.getUser(player);
+        Entity entity = event.getRightClicked();
+
+        if (entity instanceof ItemFrame && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            User user = User.getUser(player);
+            Entity entity = event.getEntity();
+
+            if (entity instanceof ItemFrame && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+                event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
+        Player player = (Player) event.getEntity();
+
+        if (player == null)
+            return;
+
+        User user = User.getUser(player);
+
         if (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE)
             event.setCancelled(true);
-
-        event.getBlock().getDrops().clear();
-        event.setExpToDrop(0);
     }
 }

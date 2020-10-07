@@ -7,9 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-public class KitBasic extends Kit {
+public class KitSoldier extends Kit {
 
-    public KitBasic() {
+    public KitSoldier() {
         super(new ItemMaker(Material.IRON_CHESTPLATE));
     }
 

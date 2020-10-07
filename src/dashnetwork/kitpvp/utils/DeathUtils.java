@@ -5,21 +5,35 @@ import dashnetwork.core.bukkit.utils.PermissionType;
 import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.kitpvp.KitPvP;
+import dashnetwork.kitpvp.kit.Kit;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class DeathUtils {
 
     public static void death(Player player, Player killer) {
         player.teleport(KitPvP.getInstance().getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
+        Kit kit = Kit.getPlayerKit(player);
+
+        if (kit != null)
+            kit.removePlayer(player);
+
         KitUtils.refresh(player);
         KitUtils.setSurvival(player);
 
-        if (killer != null)
+        if (killer != null) {
+            StatsUtils.addKill(killer);
+            StatsUtils.addDeath(player);
+
             deathMessage(player, killer);
+            addSoup(killer);
+        }
     }
 
     private static void deathMessage(Player player, Player killer) {
@@ -50,5 +64,14 @@ public class DeathUtils {
         builder.append("&7.");
 
         MessageUtils.broadcast(PermissionType.NONE, builder.build());
+    }
+
+    private static void addSoup(Player player) {
+        Kit kit = Kit.getPlayerKit(player);
+        ItemStack item = kit != null && !kit.isUsingSoup(player) ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP);
+        PlayerInventory inventory = player.getInventory();
+
+        for (int i = 0; i < 9; i++)
+            inventory.addItem(item);
     }
 }

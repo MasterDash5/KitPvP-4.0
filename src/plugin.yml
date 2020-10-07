@@ -2,3 +2,5 @@ name: KitPvP
 version: "4.0"
 authors: [ MM5, MasterDash5 ]
 main: dashnetwork.kitpvp.KitPvP
+commands:
+  spawn:

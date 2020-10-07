@@ -124,9 +124,9 @@ public class CombatListener implements Listener {
 
     public static String getCombatTime(Player player) {
         if (!isInCombat(player))
-            return null;
+            return "0.0s";
 
-        return StringUtils.shortenNumber(combatTimer.get(player.getUniqueId()) / 20.0D, 1);
+        return StringUtils.shortenNumber(combatTimer.get(player.getUniqueId()) / 20.0D, 1) + "s";
     }
 
     public static boolean isInCombat(Player player) {

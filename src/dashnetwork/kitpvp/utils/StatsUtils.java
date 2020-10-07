@@ -1,12 +1,11 @@
 package dashnetwork.kitpvp.utils;
 
 import dashnetwork.kitpvp.KitPvP;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,80 +13,95 @@ import java.util.UUID;
 
 public class StatsUtils {
 
-    private static final File dataFolder;
-    private static final File killsFile;
-    private static final File deathsFile;
-    private static final File killstreaksFile;
+    private static final KitPvP plugin = KitPvP.getInstance();
 
-    private static Map<UUID, Integer> kills;
-    private static Map<UUID, Integer> deaths;
-    private static Map<UUID, Integer> killstreaks;
+    private static final File folder = plugin.getDataFolder();
+
+    private static final File killsFile = new File(folder, "kills.yml");
+    private static final File deathsFile = new File(folder, "deaths.yml");
+    private static final File killstreaksFile = new File(folder, "killstreaks.yml");
+
+    private static FileConfiguration killsConfig;
+    private static FileConfiguration deathsConfig;
+    private static FileConfiguration killstreaksConfig;
+
+    private static final Map<UUID, Integer> kills = new HashMap<>();
+    private static final Map<UUID, Integer> deaths = new HashMap<>();
+    private static final Map<UUID, Integer> killstreaks = new HashMap<>();
 
     public static void load() {
-        kills = new HashMap<>();
-        deaths = new HashMap<>();
-        killstreaks = new HashMap<>();
+        folder.mkdirs();
 
         try {
-            if (dataFolder.mkdirs()) {
-                kills = readFile(killsFile);
-                deaths = readFile(deathsFile);
-                killstreaks = readFile(killstreaksFile);
-            }
-        } catch (Exception exception) {
+            killsFile.createNewFile();
+            deathsFile.createNewFile();
+            killstreaksFile.createNewFile();
+        } catch (IOException exception) {
             exception.printStackTrace();
+            return;
         }
+
+        killsConfig = YamlConfiguration.loadConfiguration(killsFile);
+        deathsConfig = YamlConfiguration.loadConfiguration(deathsFile);
+        killstreaksConfig = YamlConfiguration.loadConfiguration(killstreaksFile);
+
+        for (Map.Entry<String, Object> entry : killsConfig.getValues(true).entrySet())
+            kills.put(UUID.fromString(entry.getKey()), (Integer) entry.getValue());
+
+        for (Map.Entry<String, Object> entry : deathsConfig.getValues(true).entrySet())
+            deaths.put(UUID.fromString(entry.getKey()), (Integer) entry.getValue());
+
+        for (Map.Entry<String, Object> entry : killstreaksConfig.getValues(true).entrySet())
+            killstreaks.put(UUID.fromString(entry.getKey()), (Integer) entry.getValue());
     }
 
     public static void save() {
+        for (Map.Entry<UUID, Integer> entry : kills.entrySet())
+            killsConfig.set(entry.getKey().toString(), entry.getValue());
+
+        for (Map.Entry<UUID, Integer> entry : deaths.entrySet())
+            deathsConfig.set(entry.getKey().toString(), entry.getValue());
+
+        for (Map.Entry<UUID, Integer> entry : killstreaks.entrySet())
+            killstreaksConfig.set(entry.getKey().toString(), entry.getValue());
+
         try {
-            writeFile(killsFile, kills);
-            writeFile(deathsFile, deaths);
-            writeFile(killstreaksFile, killstreaks);
-        } catch (Exception exception) {
+            killsConfig.save(killsFile);
+            deathsConfig.save(deathsFile);
+            killstreaksConfig.save(killstreaksFile);
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
 
+    public static void addKill(Player player) {
+        kills.put(player.getUniqueId(), getKills(player) + 1);
+        killstreaks.put(player.getUniqueId(), getKillStreak(player) + 1);
+    }
+
+    public static void addDeath(Player player) {
+        deaths.put(player.getUniqueId(), getDeaths(player) + 1);
+        killstreaks.put(player.getUniqueId(), 0);
+    }
+
     public static int getKills(Player player) {
-        return kills.get(player.getUniqueId());
+        return kills.getOrDefault(player.getUniqueId(), 0);
     }
 
     public static int getDeaths(Player player) {
-        return deaths.get(player.getUniqueId());
+        return deaths.getOrDefault(player.getUniqueId(), 0);
     }
 
-    public static int getKDR(Player player) {
-        return getKills(player) / getDeaths(player);
+    public static int getKillStreak(Player player) {
+        return killstreaks.getOrDefault(player.getUniqueId(), 0);
     }
 
-    private static void writeFile(File file, Object data) throws IOException {
-        if (file.createNewFile()) {
-            Yaml yaml = new Yaml();
-            FileWriter writer = new FileWriter(file);
+    public static double getKDR(Player player) {
+        double kdr = (double) getKills(player) / (double) getDeaths(player);
 
-            yaml.dump(data, writer);
-        }
-    }
+        if (Double.isNaN(kdr) || Double.isInfinite(kdr))
+            kdr = 0.0;
 
-    private static <T> T readFile(File file) throws IOException {
-        if (file.createNewFile()) {
-            Yaml yaml = new Yaml();
-            FileReader reader = new FileReader(file);
-
-            return (T) yaml.load(reader);
-        } else
-            return null;
-    }
-
-    static {
-        dataFolder = KitPvP.getInstance().getDataFolder();
-
-        char slash = (char) (System.getProperty("os.name").startsWith("Windows") ? 92 : 47);
-        String path = dataFolder.getPath() + slash;
-
-        killsFile = new File(path + "kills.yml");
-        deathsFile = new File(path + "deaths.yml");
-        killstreaksFile = new File(path + "killstreaks.yml");
+        return kdr;
     }
 }

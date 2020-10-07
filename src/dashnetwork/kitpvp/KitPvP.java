@@ -1,6 +1,10 @@
 package dashnetwork.kitpvp;
 
-import dashnetwork.kitpvp.kit.kits.KitBasic;
+import dashnetwork.kitpvp.commands.CommandSpawn;
+import dashnetwork.kitpvp.kit.kits.KitArcher;
+import dashnetwork.kitpvp.kit.kits.KitScout;
+import dashnetwork.kitpvp.kit.kits.KitSoldier;
+import dashnetwork.kitpvp.kit.kits.KitTank;
 import dashnetwork.kitpvp.listeners.*;
 import dashnetwork.kitpvp.utils.StatsUtils;
 import org.bukkit.Bukkit;
@@ -13,12 +17,20 @@ import org.bukkit.util.Vector;
 public class KitPvP extends JavaPlugin {
 
     // To Do List (In Order)
-    // TODO: Add refills on death
-    // TODO: Increase killstreak, kill count and death count
-    // TODO: Remove dead killstreak
     // TODO: Add more kits
     // TODO: Make the killer be the person who has done the most damage to the killed
-    // TODO: Scoreboard
+
+    // Soldier
+    // Scout
+    // Tank
+    // Archer
+
+    // Ninja
+    // Assassin
+    // Swapper
+    // Thor
+    // Pyro
+    // Witch
 
     private static Location spawn;
     private static Vector[] spawnBounds;
@@ -26,13 +38,17 @@ public class KitPvP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
+
         spawn = new Location(Bukkit.getWorld("world"), 203.5D, 240.5D, 235.5D, -90.0F, 0.0F);
         spawnBounds = new Vector[]{new Vector(198, 231, 224), new Vector(226, 247, 245)};
-        instance = this;
 
         StatsUtils.load();
 
-        new KitBasic();
+        new KitSoldier();
+        new KitScout();
+        new KitTank();
+        new KitArcher();
 
         PluginManager manager = getServer().getPluginManager();
         manager.registerEvents(new BlockListener(), this);
@@ -49,6 +65,8 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new RespawnListener(), this);
         manager.registerEvents(new SignListener(), this);
         manager.registerEvents(new SoupListener(), this);
+
+        getCommand("spawn").setExecutor(new CommandSpawn());
     }
 
     @Override

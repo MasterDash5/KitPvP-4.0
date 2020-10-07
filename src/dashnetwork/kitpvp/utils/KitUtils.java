@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 
 public class KitUtils {
@@ -17,6 +18,9 @@ public class KitUtils {
         player.setSaturation(20.0F);
         player.setHealth(20.0D);
         player.setMaxHealth(20.0D);
+
+        for (PotionEffect effect : player.getActivePotionEffects())
+            player.removePotionEffect(effect.getType());
 
         PlayerInventory inventory = player.getInventory();
         inventory.setArmorContents(null);
