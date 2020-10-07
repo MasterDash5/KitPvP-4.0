@@ -2,7 +2,7 @@ package dashnetwork.kitpvp.listeners;
 
 import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.LazyUtils;
-import dashnetwork.kitpvp.KitPvP;
+import dashnetwork.kitpvp.utils.SpawnUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,7 +29,7 @@ public class BlockListener implements Listener {
         Action action = event.getAction();
         Block block = event.getClickedBlock();
 
-        if (KitPvP.getInstance().isInSpawn(player) && player.getGameMode() != GameMode.CREATIVE && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
+        if (SpawnUtils.isInSpawn(player) && player.getGameMode() != GameMode.CREATIVE && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
             event.setCancelled(true);
             player.updateInventory();
         }

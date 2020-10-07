@@ -6,13 +6,10 @@ import dashnetwork.kitpvp.kit.kits.KitScout;
 import dashnetwork.kitpvp.kit.kits.KitSoldier;
 import dashnetwork.kitpvp.kit.kits.KitTank;
 import dashnetwork.kitpvp.listeners.*;
+import dashnetwork.kitpvp.utils.SpawnUtils;
 import dashnetwork.kitpvp.utils.StatsUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 public class KitPvP extends JavaPlugin {
 
@@ -32,17 +29,13 @@ public class KitPvP extends JavaPlugin {
     // Pyro
     // Witch
 
-    private static Location spawn;
-    private static Vector[] spawnBounds;
     private static KitPvP instance;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        spawn = new Location(Bukkit.getWorld("world"), 203.5D, 240.5D, 235.5D, -90.0F, 0.0F);
-        spawnBounds = new Vector[]{new Vector(198, 231, 224), new Vector(226, 247, 245)};
-
+        SpawnUtils.startup();
         StatsUtils.load();
 
         new KitSoldier();
@@ -72,22 +65,9 @@ public class KitPvP extends JavaPlugin {
     @Override
     public void onDisable() {
         StatsUtils.save();
+        SpawnUtils.stop();
 
-        spawn = null;
-        spawnBounds = null;
         instance = null;
-    }
-
-    public Location getSpawn() {
-        return spawn;
-    }
-
-    public boolean isInSpawn(Entity entity) {
-        return isInSpawn(entity.getLocation());
-    }
-
-    public boolean isInSpawn(Location location) {
-        return location.toVector().isInAABB(spawnBounds[0], spawnBounds[1]);
     }
 
     public static KitPvP getInstance() {

@@ -1,6 +1,6 @@
 package dashnetwork.kitpvp.listeners;
 
-import dashnetwork.kitpvp.KitPvP;
+import dashnetwork.kitpvp.utils.SpawnUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ public class HungerListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Player player = (Player) event.getEntity();
 
-        if (KitPvP.getInstance().isInSpawn(player)) {
+        if (SpawnUtils.isInSpawn(player)) {
             event.setCancelled(true);
             event.setFoodLevel(20);
         }

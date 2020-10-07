@@ -4,6 +4,7 @@ import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.utils.KitUtils;
+import dashnetwork.kitpvp.utils.SpawnUtils;
 import dashnetwork.kitpvp.utils.StatsUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -55,7 +55,7 @@ public class JoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        player.teleport(KitPvP.getInstance().getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        SpawnUtils.teleportToSpawn(player);
 
         KitUtils.refresh(player);
         KitUtils.setSurvival(player);
@@ -67,7 +67,7 @@ public class JoinListener implements Listener {
 
     public void setupScoreboard(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("sidebar", "dummy");
+        Objective objective = scoreboard.registerNewObjective("info", "dummy");
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(ColorUtils.translate("&6&lKitPvP"));
@@ -127,9 +127,9 @@ public class JoinListener implements Listener {
             deathCount.setSuffix("" + deaths);
 
         Team kdrTeam = scoreboard.getTeam("KDR");
-        double kdr = StatsUtils.getKDR(player);
+        String kdr = StatsUtils.getKDR(player);
 
-        if (kdr != Double.parseDouble(kdrTeam.getSuffix()))
+        if (!kdr.equals(kdrTeam.getSuffix()))
             kdrTeam.setSuffix("" + kdr);
 
         Team combatTimer = scoreboard.getTeam("CombatTimer");

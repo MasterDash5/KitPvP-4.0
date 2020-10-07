@@ -44,7 +44,7 @@ public abstract class Kit {
     }
 
     public void addPlayer(Player player, boolean potions) {
-        players.put(player.getUniqueId(), potions);
+        players.put(player.getUniqueId(), !potions);
     }
 
     public boolean isUsingSoup(Player player) {

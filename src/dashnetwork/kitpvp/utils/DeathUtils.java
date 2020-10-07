@@ -4,36 +4,36 @@ import dashnetwork.core.bukkit.utils.MessageUtils;
 import dashnetwork.core.bukkit.utils.PermissionType;
 import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.MessageBuilder;
-import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.kit.Kit;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class DeathUtils {
 
     public static void death(Player player, Player killer) {
-        player.teleport(KitPvP.getInstance().getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-
         Kit kit = Kit.getPlayerKit(player);
-
-        if (kit != null)
-            kit.removePlayer(player);
 
         KitUtils.refresh(player);
         KitUtils.setSurvival(player);
+
+        SpawnUtils.teleportToSpawn(player);
 
         if (killer != null) {
             StatsUtils.addKill(killer);
             StatsUtils.addDeath(player);
 
             deathMessage(player, killer);
-            addSoup(killer);
+
+            if (kit != null)
+                refill(killer);
         }
+
+        if (kit != null)
+            kit.removePlayer(player);
     }
 
     private static void deathMessage(Player player, Player killer) {
@@ -66,12 +66,16 @@ public class DeathUtils {
         MessageUtils.broadcast(PermissionType.NONE, builder.build());
     }
 
-    private static void addSoup(Player player) {
+    private static void refill(Player player) {
         Kit kit = Kit.getPlayerKit(player);
-        ItemStack item = kit != null && !kit.isUsingSoup(player) ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP);
+        ItemStack refillItem = kit != null && !kit.isUsingSoup(player) ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP);
         PlayerInventory inventory = player.getInventory();
 
         for (int i = 0; i < 9; i++)
-            inventory.addItem(item);
+            inventory.addItem(refillItem);
+
+        for (ItemStack item : inventory.getContents())
+            if (item.getType() == Material.COOKED_BEEF)
+                item.setAmount(64);
     }
 }

@@ -1,5 +1,6 @@
 package dashnetwork.kitpvp.utils;
 
+import dashnetwork.core.utils.StringUtils;
 import dashnetwork.kitpvp.KitPvP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -96,12 +97,12 @@ public class StatsUtils {
         return killstreaks.getOrDefault(player.getUniqueId(), 0);
     }
 
-    public static double getKDR(Player player) {
+    public static String getKDR(Player player) {
         double kdr = (double) getKills(player) / (double) getDeaths(player);
 
         if (Double.isNaN(kdr) || Double.isInfinite(kdr))
             kdr = 0.0;
 
-        return kdr;
+        return StringUtils.shortenNumber(kdr, 2);
     }
 }
