@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -72,7 +73,7 @@ public class BlockListener implements Listener {
         User user = User.getUser(player);
         Entity entity = event.getRightClicked();
 
-        if (entity instanceof ItemFrame && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+        if ((entity instanceof ItemFrame || entity instanceof Painting) && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
             event.setCancelled(true);
     }
 
@@ -83,14 +84,14 @@ public class BlockListener implements Listener {
             User user = User.getUser(player);
             Entity entity = event.getEntity();
 
-            if (entity instanceof ItemFrame && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+            if ((entity instanceof ItemFrame || entity instanceof Painting) && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
                 event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-        Player player = (Player) event.getEntity();
+        Player player = (Player) event.getRemover();
 
         if (player == null)
             return;

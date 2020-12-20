@@ -75,7 +75,7 @@ public class DeathUtils {
             inventory.addItem(refillItem);
 
         for (ItemStack item : inventory.getContents())
-            if (item.getType() == Material.COOKED_BEEF)
+            if (item != null && item.getType() == Material.COOKED_BEEF)
                 item.setAmount(64);
     }
 }

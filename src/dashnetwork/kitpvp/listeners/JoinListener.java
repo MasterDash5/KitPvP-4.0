@@ -73,34 +73,34 @@ public class JoinListener implements Listener {
         objective.setDisplayName(ColorUtils.translate("&6&lKitPvP"));
 
         objective.getScore(" ").setScore(9);
-        objective.getScore(ColorUtils.translate("&2&lKills&2: &e")).setScore(8);
-        objective.getScore(ColorUtils.translate("&6&lStreak&6: &e")).setScore(7);
-        objective.getScore(ColorUtils.translate("&c&lDeaths&c: &e")).setScore(6);
-        objective.getScore(ColorUtils.translate("&b&lKDR&b: &e")).setScore(5);
+        objective.getScore(ColorUtils.translate("&2&lKills&2: ")).setScore(8);
+        objective.getScore(ColorUtils.translate("&6&lStreak&6: ")).setScore(7);
+        objective.getScore(ColorUtils.translate("&c&lDeaths&c: ")).setScore(6);
+        objective.getScore(ColorUtils.translate("&b&lKDR&b: ")).setScore(5);
         objective.getScore("  ").setScore(4);
-        objective.getScore(ColorUtils.translate("&d&lCombat&d: &e")).setScore(3);
+        objective.getScore(ColorUtils.translate("&d&lCombat&d: ")).setScore(3);
         objective.getScore("   ").setScore(2);
         objective.getScore(ColorUtils.translate("&6play.dashnetwork.xyz")).setScore(1);
 
         Team killCount = scoreboard.registerNewTeam("KillCount");
-        killCount.addEntry(ColorUtils.translate("&2&lKills&2: &e"));
-        killCount.setSuffix("" + StatsUtils.getKills(player));
+        killCount.addEntry(ColorUtils.translate("&2&lKills&2: "));
+        killCount.setSuffix(ColorUtils.translate("&e" + StatsUtils.getKills(player)));
 
         Team streakTeam = scoreboard.registerNewTeam("Streak");
-        streakTeam.addEntry(ColorUtils.translate("&6&lStreak&6: &e"));
-        streakTeam.setSuffix("" + StatsUtils.getKillStreak(player));
+        streakTeam.addEntry(ColorUtils.translate("&6&lStreak&6: "));
+        streakTeam.setSuffix(ColorUtils.translate("&e" + StatsUtils.getKillStreak(player)));
 
         Team deathCount = scoreboard.registerNewTeam("DeathCount");
-        deathCount.addEntry(ColorUtils.translate("&c&lDeaths&c: &e"));
-        deathCount.setSuffix("" + StatsUtils.getDeaths(player));
+        deathCount.addEntry(ColorUtils.translate("&c&lDeaths&c: "));
+        deathCount.setSuffix(ColorUtils.translate("&e" + StatsUtils.getDeaths(player)));
 
         Team kdrTeam = scoreboard.registerNewTeam("KDR");
-        kdrTeam.addEntry(ColorUtils.translate("&b&lKDR&b: &e"));
-        kdrTeam.setSuffix("" + StatsUtils.getKDR(player));
+        kdrTeam.addEntry(ColorUtils.translate("&b&lKDR&b: "));
+        kdrTeam.setSuffix(ColorUtils.translate("&e" + StatsUtils.getKDR(player)));
 
         Team combatTimer = scoreboard.registerNewTeam("CombatTimer");
-        combatTimer.addEntry(ColorUtils.translate("&d&lCombat&d: &e"));
-        combatTimer.setSuffix(CombatListener.getCombatTime(player));
+        combatTimer.addEntry(ColorUtils.translate("&d&lCombat&d: "));
+        combatTimer.setSuffix(ColorUtils.translate("&e" + CombatListener.getCombatTime(player)));
 
         player.setScoreboard(scoreboard);
     }
