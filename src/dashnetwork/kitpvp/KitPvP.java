@@ -17,11 +17,6 @@ public class KitPvP extends JavaPlugin {
     // TODO: Add more kits
     // TODO: Make the killer be the person who has done the most damage to the killed
 
-    // Soldier
-    // Scout
-    // Tank
-    // Archer
-
     // Ninja
     // Assassin
     // Swapper
@@ -58,6 +53,7 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new RespawnListener(), this);
         manager.registerEvents(new SignListener(), this);
         manager.registerEvents(new SoupListener(), this);
+        manager.registerEvents(new WeatherListener(), this);
 
         getCommand("spawn").setExecutor(new CommandSpawn());
     }
