@@ -111,31 +111,31 @@ public class JoinListener implements Listener {
         Team killCount = scoreboard.getTeam("KillCount");
         int kills = StatsUtils.getKills(player);
 
-        if (kills != Integer.parseInt(killCount.getSuffix()))
+        if (kills != Integer.parseInt(ColorUtils.strip(killCount.getSuffix())))
             killCount.setSuffix("" + kills);
 
         Team streakTeam = scoreboard.getTeam("Streak");
         int streak = StatsUtils.getKillStreak(player);
 
-        if (streak != Integer.parseInt(streakTeam.getSuffix()))
+        if (streak != Integer.parseInt(ColorUtils.strip(streakTeam.getSuffix())))
             streakTeam.setSuffix("" + streak);
 
         Team deathCount = scoreboard.getTeam("DeathCount");
         int deaths = StatsUtils.getDeaths(player);
 
-        if (deaths != Integer.parseInt(deathCount.getSuffix()))
+        if (deaths != Integer.parseInt(ColorUtils.strip(deathCount.getSuffix())))
             deathCount.setSuffix("" + deaths);
 
         Team kdrTeam = scoreboard.getTeam("KDR");
         String kdr = StatsUtils.getKDR(player);
 
-        if (!kdr.equals(kdrTeam.getSuffix()))
+        if (!kdr.equals(ColorUtils.strip(kdrTeam.getSuffix())))
             kdrTeam.setSuffix("" + kdr);
 
         Team combatTimer = scoreboard.getTeam("CombatTimer");
         String combatTime = CombatListener.getCombatTime(player);
 
-        if (!combatTime.equals(combatTimer.getSuffix()))
+        if (!combatTime.equals(ColorUtils.strip(combatTimer.getSuffix())))
             combatTimer.setSuffix(combatTime);
     }
 }
