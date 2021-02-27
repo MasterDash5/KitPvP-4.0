@@ -5,6 +5,8 @@ import dashnetwork.kitpvp.KitPvP;
 import dashnetwork.kitpvp.api.DuelsAPI;
 import dashnetwork.kitpvp.utils.DeathUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -49,10 +51,15 @@ public class CombatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof EnderCrystal || event.getEntity() instanceof EnderCrystal) {
+            event.setCancelled(true);
+            return;
+        }
+
         Player player = (Player) event.getEntity();
         double finalDamage = event.getFinalDamage();
 
-        if (finalDamage <= 0.0D || player == null || DuelsAPI.isInDuel(player))
+        if (finalDamage <= 0.0D || player == null || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || DuelsAPI.isInDuel(player))
             return;
 
         Entity damager = event.getDamager();
@@ -92,10 +99,15 @@ public class CombatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof EnderCrystal) {
+            event.setCancelled(true);
+            return;
+        }
+
         Player player = (Player) event.getEntity();
         double finalDamage = event.getFinalDamage();
 
-        if (finalDamage <= 0.0D || player == null || DuelsAPI.isInDuel(player))
+        if (finalDamage <= 0.0D || player == null || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || DuelsAPI.isInDuel(player))
             return;
 
         if (player.getHealth() - finalDamage <= 0.0D && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {

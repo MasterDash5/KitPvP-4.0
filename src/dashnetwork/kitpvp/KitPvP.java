@@ -1,5 +1,6 @@
 package dashnetwork.kitpvp;
 
+import dashnetwork.kitpvp.commands.CommandBuild;
 import dashnetwork.kitpvp.commands.CommandSpawn;
 import dashnetwork.kitpvp.kit.kits.KitArcher;
 import dashnetwork.kitpvp.kit.kits.KitScout;
@@ -56,6 +57,7 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new WeatherListener(), this);
 
         getCommand("spawn").setExecutor(new CommandSpawn());
+        getCommand("build").setExecutor(new CommandBuild());
     }
 
     @Override

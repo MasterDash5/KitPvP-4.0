@@ -1,9 +1,8 @@
 package dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.bukkit.utils.User;
 import dashnetwork.core.utils.LazyUtils;
+import dashnetwork.kitpvp.commands.CommandBuild;
 import dashnetwork.kitpvp.utils.SpawnUtils;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -26,54 +25,59 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        User user = User.getUser(player);
         Action action = event.getAction();
         Block block = event.getClickedBlock();
 
-        if (SpawnUtils.isInSpawn(player) && player.getGameMode() != GameMode.CREATIVE && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
+        if (!CommandBuild.canBuild(player) && SpawnUtils.isInSpawn(player) && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
             event.setCancelled(true);
             player.updateInventory();
         }
 
-        if (!user.isAdmin() && player.getGameMode() != GameMode.CREATIVE && action.name().contains("LEFT") && block != null && block.getType() == Material.FIRE)
+        if (!CommandBuild.canBuild(player) && action == Action.RIGHT_CLICK_BLOCK && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
             event.setUseInteractedBlock(Event.Result.DENY);
+            player.updateInventory();
+        }
 
-        if (!user.isAdmin() && player.getGameMode() != GameMode.CREATIVE && action == Action.PHYSICAL) {
+        if (!CommandBuild.canBuild(player) && action == Action.LEFT_CLICK_BLOCK && block != null) {
+            Block blockAbove = block.getLocation().add(0, 1, 0).getBlock();
+
+            if (blockAbove.getType() == Material.FIRE)
+                event.setCancelled(true);
+        }
+
+        if (!CommandBuild.canBuild(player) && action == Action.PHYSICAL) {
             Material type = event.getClickedBlock().getType();
 
             if (!LazyUtils.anyContains(type.name(), "PLATE", "TRIPWIRE"))
                 event.setUseInteractedBlock(Event.Result.DENY);
         }
+
+        if (block != null && block.getType() == Material.DRAGON_EGG)
+            event.setUseInteractedBlock(Event.Result.DENY);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        User user = User.getUser(player);
 
-        if (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE)
+        if (!CommandBuild.canBuild(player))
             event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        User user = User.getUser(player);
 
-        if (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE) {
+        if (!CommandBuild.canBuild(player))
             event.setCancelled(true);
-            event.getBlock().getDrops().clear();
-            event.setExpToDrop(0);
-        }
     }
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        User user = User.getUser(player);
         Entity entity = event.getRightClicked();
 
-        if ((entity instanceof ItemFrame || entity instanceof Painting) && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+        if (!CommandBuild.canBuild(player) && (entity instanceof ItemFrame || entity instanceof Painting))
             event.setCancelled(true);
     }
 
@@ -81,10 +85,9 @@ public class BlockListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
-            User user = User.getUser(player);
             Entity entity = event.getEntity();
 
-            if ((entity instanceof ItemFrame || entity instanceof Painting) && (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE))
+            if (!CommandBuild.canBuild(player) && (entity instanceof ItemFrame || entity instanceof Painting))
                 event.setCancelled(true);
         }
     }
@@ -93,12 +96,7 @@ public class BlockListener implements Listener {
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         Player player = (Player) event.getRemover();
 
-        if (player == null)
-            return;
-
-        User user = User.getUser(player);
-
-        if (!user.isAdmin() || player.getGameMode() != GameMode.CREATIVE)
+        if (player != null && !CommandBuild.canBuild(player))
             event.setCancelled(true);
     }
 }
