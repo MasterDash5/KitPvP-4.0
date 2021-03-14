@@ -1,9 +1,9 @@
 package xyz.dashnetwork.kitpvp.kit.kits;
 
-import dashnetwork.core.bukkit.utils.ItemMaker;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 import xyz.dashnetwork.kitpvp.kit.KitEquipment;
 

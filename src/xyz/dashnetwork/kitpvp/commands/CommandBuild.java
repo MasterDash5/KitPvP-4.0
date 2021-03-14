@@ -1,11 +1,11 @@
 package xyz.dashnetwork.kitpvp.commands;
 
-import dashnetwork.core.bukkit.utils.MessageUtils;
-import dashnetwork.core.bukkit.utils.User;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.core.bukkit.utils.User;
 
 import java.util.ArrayList;
 import java.util.List;

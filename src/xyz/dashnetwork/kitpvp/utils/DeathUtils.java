@@ -1,15 +1,15 @@
 package xyz.dashnetwork.kitpvp.utils;
 
-import dashnetwork.core.bukkit.utils.MessageUtils;
-import dashnetwork.core.bukkit.utils.PermissionType;
-import dashnetwork.core.bukkit.utils.User;
-import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.core.bukkit.utils.PermissionType;
+import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 
 public class DeathUtils {

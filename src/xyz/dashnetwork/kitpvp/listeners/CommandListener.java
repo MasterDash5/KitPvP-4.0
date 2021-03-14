@@ -1,12 +1,12 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.bukkit.utils.MessageUtils;
-import dashnetwork.core.utils.LazyUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.core.utils.LazyUtils;
 import xyz.dashnetwork.kitpvp.gui.KitMenu;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 

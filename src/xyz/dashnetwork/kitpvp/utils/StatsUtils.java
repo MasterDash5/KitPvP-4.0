@@ -1,9 +1,9 @@
 package xyz.dashnetwork.kitpvp.utils;
 
-import dashnetwork.core.utils.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import xyz.dashnetwork.core.utils.StringUtils;
 import xyz.dashnetwork.kitpvp.KitPvP;
 
 import java.io.File;

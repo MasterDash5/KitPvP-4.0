@@ -1,6 +1,5 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.utils.LazyUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -9,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import xyz.dashnetwork.core.utils.LazyUtils;
 
 public class DropListener implements Listener {
 

@@ -1,11 +1,11 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.utils.ColorUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.kitpvp.gui.KitMenu;
 
 public class NPCListener implements Listener {

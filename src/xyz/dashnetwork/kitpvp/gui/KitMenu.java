@@ -1,10 +1,10 @@
 package xyz.dashnetwork.kitpvp.gui;
 
-import dashnetwork.core.bukkit.utils.ItemMaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 
 public class KitMenu {

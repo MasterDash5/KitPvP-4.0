@@ -1,7 +1,5 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.utils.ColorUtils;
-import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,6 +11,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import xyz.dashnetwork.core.utils.ColorUtils;
+import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.kitpvp.KitPvP;
 import xyz.dashnetwork.kitpvp.utils.KitUtils;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;

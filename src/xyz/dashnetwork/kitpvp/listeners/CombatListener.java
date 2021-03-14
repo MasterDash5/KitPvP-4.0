@@ -1,6 +1,5 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EnderCrystal;
@@ -14,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.dashnetwork.core.utils.StringUtils;
 import xyz.dashnetwork.kitpvp.KitPvP;
 import xyz.dashnetwork.kitpvp.api.DuelsAPI;
 import xyz.dashnetwork.kitpvp.utils.DeathUtils;

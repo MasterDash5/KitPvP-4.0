@@ -1,6 +1,5 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
-import dashnetwork.core.utils.LazyUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -17,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import xyz.dashnetwork.core.utils.LazyUtils;
 import xyz.dashnetwork.kitpvp.commands.CommandBuild;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
