@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
@@ -17,8 +18,9 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        Inventory clickedInventory = event.getClickedInventory();
 
-        if (event.getClickedInventory().equals(KitMenu.getKitMenu())) {
+        if (clickedInventory != null && clickedInventory.equals(KitMenu.getKitMenu())) {
             event.setCancelled(true);
 
             ItemStack item = event.getCurrentItem();

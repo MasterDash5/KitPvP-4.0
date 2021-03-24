@@ -1,6 +1,7 @@
 package xyz.dashnetwork.kitpvp.kit;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
@@ -16,7 +17,7 @@ public abstract class Kit {
     private static final List<Kit> kits = new ArrayList<>();
 
     public Kit(ItemMaker displayItem) {
-        this.displayItem = displayItem.name("&a" + getName()).build();
+        this.displayItem = displayItem.name("&a" + getName()).flags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS).build();
         this.equipment = setupEquipment();
         this.players = new HashMap<>();
 
