@@ -17,11 +17,6 @@ public class DeathUtils {
     public static void death(Player player, Player killer) {
         Kit kit = Kit.getPlayerKit(player);
 
-        KitUtils.refresh(player);
-        KitUtils.setSurvival(player);
-
-        SpawnUtils.teleportToSpawn(player);
-
         if (killer != null) {
             StatsUtils.addKill(killer);
             StatsUtils.addDeath(player);
@@ -32,8 +27,16 @@ public class DeathUtils {
                 refill(killer);
         }
 
-        if (kit != null)
-            kit.removePlayer(player);
+        KitUtils.refresh(player);
+        KitUtils.setSurvival(player);
+
+        SpawnUtils.teleportToSpawn(player);
+
+        if (kit != null) {
+            boolean potions = kit.getPlayers().getOrDefault(player.getUniqueId(), false);
+
+            kit.loadKit(player, potions);
+        }
     }
 
     private static void deathMessage(Player player, Player killer) {

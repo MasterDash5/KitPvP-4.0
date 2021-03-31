@@ -19,6 +19,9 @@ public class KitUtils {
         player.setHealth(20.0D);
         player.setMaxHealth(20.0D);
 
+        player.setMaximumNoDamageTicks(20);
+        player.setNoDamageTicks(20);
+
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());
 

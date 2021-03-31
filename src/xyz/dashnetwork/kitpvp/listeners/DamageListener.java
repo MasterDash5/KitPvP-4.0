@@ -28,9 +28,6 @@ public class DamageListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
 
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
-            event.setCancelled(true);
-
         if (SpawnUtils.isInSpawn(entity)) {
             event.setCancelled(true);
 

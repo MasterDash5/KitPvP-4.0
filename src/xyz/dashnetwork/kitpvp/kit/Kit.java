@@ -40,16 +40,20 @@ public abstract class Kit {
 
     public void loadKit(Player player, boolean potions) {
         equipment.loadKit(player, potions);
-        MessageUtils.message(player, "&6&l» &7You have been given the &c" + getName() + "&7 kit.");
+
+        if (!players.containsKey(player.getUniqueId()))
+            MessageUtils.message(player, "&6&l» &7You have been given the &c" + getName() + "&7 kit.");
+
         addPlayer(player, potions);
     }
 
     public void addPlayer(Player player, boolean potions) {
-        players.put(player.getUniqueId(), !potions);
+        removeFromKits(player);
+        players.put(player.getUniqueId(), potions);
     }
 
     public boolean isUsingSoup(Player player) {
-        return players.getOrDefault(player.getUniqueId(), true);
+        return !players.getOrDefault(player.getUniqueId(), true);
     }
 
     public boolean isUsingPotions(Player player) {
@@ -78,6 +82,11 @@ public abstract class Kit {
                 return kit;
 
         return null;
+    }
+
+    public static void removeFromKits(Player player) {
+        for (Kit kit : kits)
+            kit.removePlayer(player);
     }
 
     public static List<Kit> getKits() {

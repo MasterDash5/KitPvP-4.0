@@ -17,6 +17,7 @@ public class KitPvP extends JavaPlugin {
     // To Do List (In Order)
     // TODO: Add more kits
     // TODO: Make the killer be the person who has done the most damage to the killed
+    // TODO: Random kit sign
 
     // Ninja
     // Assassin
@@ -55,6 +56,7 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new SignListener(), this);
         manager.registerEvents(new SoupListener(), this);
         manager.registerEvents(new WeatherListener(), this);
+        manager.registerEvents(new FallListener(), this);
 
         getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("build").setExecutor(new CommandBuild());

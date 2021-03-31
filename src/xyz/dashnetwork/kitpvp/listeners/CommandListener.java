@@ -17,7 +17,7 @@ public class CommandListener implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage().toLowerCase();
 
-        if (CombatListener.isInCombat(player) && message.equalsIgnoreCase("/kill")) {
+        if (CombatListener.isInCombat(player) && message.startsWith("/kill")) {
             event.setCancelled(true);
             MessageUtils.message(player, "&6&l» &7You can't do that while in combat!");
             return;

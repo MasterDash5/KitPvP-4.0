@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.kitpvp.listeners.CombatListener;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
 public class CommandSpawn implements CommandExecutor {
@@ -14,8 +15,11 @@ public class CommandSpawn implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            SpawnUtils.teleportToSpawn(player);
-            MessageUtils.message(player, "&6&l» &7Teleporting...");
+            if (!CombatListener.isInCombat(player)) {
+                SpawnUtils.teleportToSpawn(player);
+                MessageUtils.message(player, "&6&l» &7Teleporting...");
+            } else
+                MessageUtils.message(player, "&6&l» &7You can't teleport while in combat!");
         }
 
         return true;

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.kitpvp.listeners.CombatListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,11 @@ public class CommandBuild implements CommandExecutor {
 
         if (!user.isAdmin()) {
             MessageUtils.noPermissions(player);
+            return true;
+        }
+
+        if (CombatListener.isInCombat(player)) {
+            MessageUtils.message(player, "&6&l» &7You can't build while in combat!");
             return true;
         }
 
