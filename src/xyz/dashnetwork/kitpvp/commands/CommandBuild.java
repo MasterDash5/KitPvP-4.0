@@ -40,7 +40,7 @@ public class CommandBuild implements CommandExecutor {
         else
             builders.add(uuid);
 
-        MessageUtils.message(player, "&6&l» &7You can " + (builders.contains(uuid) ? "now" : "no longer") + " build");
+        MessageUtils.message(player, "&6&l» &7You can " + (builders.contains(uuid) ? "now" : "no longer") + " build.");
 
         return true;
     }

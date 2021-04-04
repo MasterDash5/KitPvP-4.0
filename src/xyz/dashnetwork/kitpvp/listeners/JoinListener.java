@@ -27,7 +27,7 @@ public class JoinListener implements Listener {
     public JoinListener() {
         MessageBuilder header = new MessageBuilder();
         header.append("&6&lDashNetwork\n");
-        header.append("&7Server: &cPvP\n");
+        header.append("&7Connected to &6&lPvP\n");
 
         MessageBuilder footer = new MessageBuilder();
         footer.append("\n&6play.dashnetwork.xyz");

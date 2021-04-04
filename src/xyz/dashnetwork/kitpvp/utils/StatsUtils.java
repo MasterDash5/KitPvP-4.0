@@ -98,10 +98,11 @@ public class StatsUtils {
     }
 
     public static String getKDR(Player player) {
-        double kdr = (double) getKills(player) / (double) getDeaths(player);
+        double kills = getKills(player);
+        double kdr = kills / (double) getDeaths(player);
 
         if (Double.isNaN(kdr) || Double.isInfinite(kdr))
-            kdr = 0.0;
+            kdr = kills;
 
         return StringUtils.shortenNumber(kdr, 2);
     }

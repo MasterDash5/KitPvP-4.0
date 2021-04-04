@@ -8,10 +8,12 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
+import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 
 public class KitUtils {
 
-    private static final Potion potion = new Potion(PotionType.INSTANT_HEAL, 2).splash();
+    private static ItemStack soup = new ItemMaker(Material.MUSHROOM_SOUP).name("&fMushroom Soup").build();
+    private static ItemStack potion = new Potion(PotionType.INSTANT_HEAL, 2).splash().toItemStack(1);
 
     public static void refresh(Player player) {
         player.setFoodLevel(20);
@@ -21,6 +23,9 @@ public class KitUtils {
 
         player.setMaximumNoDamageTicks(20);
         player.setNoDamageTicks(20);
+
+        player.setExp(0.0F);
+        player.setLevel(0);
 
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());
@@ -38,15 +43,11 @@ public class KitUtils {
         player.setAllowFlight(false);
     }
 
-    public static ItemStack getHealingPotion() {
-        ItemStack item = new ItemStack(Material.POTION);
-
-        potion.apply(item);
-
-        return item;
+    public static ItemStack getPotion() {
+        return potion;
     }
 
-    public static boolean isHealingPotion(ItemStack item) {
-        return potion.equals(Potion.fromItemStack(item));
+    public static ItemStack getSoup() {
+        return soup;
     }
 }

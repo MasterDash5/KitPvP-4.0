@@ -1,14 +1,15 @@
 package xyz.dashnetwork.kitpvp.utils;
 
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
-import xyz.dashnetwork.core.bukkit.utils.PermissionType;
 import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.core.bukkit.utils.VanishUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 
@@ -58,20 +59,20 @@ public class DeathUtils {
             builder.append(" &7died trying to hurt ");
         else if (lastCause == EntityDamageEvent.DamageCause.PROJECTILE)
             builder.append(" &7was shot by ");
-        else if (lastCause == EntityDamageEvent.DamageCause.CUSTOM)
-            builder.append(" &7got shit on by ");
         else
             builder.append(" &7has been slain by ");
 
         builder.append(User.getUser(killer).getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + killer.getName());
         builder.append("&7.");
 
-        MessageUtils.broadcast(PermissionType.NONE, builder.build());
+        for (Player online : Bukkit.getOnlinePlayers())
+            if (VanishUtils.canSee(online, player) && VanishUtils.canSee(online, killer))
+                MessageUtils.message(online, builder.build());
     }
 
     private static void refill(Player player) {
         Kit kit = Kit.getPlayerKit(player);
-        ItemStack refillItem = kit != null && !kit.isUsingSoup(player) ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP);
+        ItemStack refillItem = kit != null && kit.isUsingPotions(player) ? KitUtils.getPotion() : KitUtils.getSoup();
         PlayerInventory inventory = player.getInventory();
 
         for (int i = 0; i < 9; i++)

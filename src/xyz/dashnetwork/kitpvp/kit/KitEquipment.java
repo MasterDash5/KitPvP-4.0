@@ -90,7 +90,7 @@ public class KitEquipment {
 
         for (int i = 0; i < 36; i++)
             if (inventory.getItem(i) == null)
-                inventory.setItem(i, potions ? KitUtils.getHealingPotion() : new ItemStack(Material.MUSHROOM_SOUP));
+                inventory.setItem(i, potions ? KitUtils.getPotion() : KitUtils.getSoup());
 
         player.updateInventory();
     }

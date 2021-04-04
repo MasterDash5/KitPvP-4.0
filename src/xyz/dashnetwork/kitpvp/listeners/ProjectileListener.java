@@ -1,6 +1,8 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +16,10 @@ public class ProjectileListener implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
-        event.getEntity().remove();
+        Entity entity = event.getEntity();
+
+        if (!(entity instanceof FishHook))
+            entity.remove();
     }
 
     @EventHandler

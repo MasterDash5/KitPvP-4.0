@@ -16,8 +16,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import xyz.dashnetwork.core.utils.LazyUtils;
 import xyz.dashnetwork.kitpvp.commands.CommandBuild;
+import xyz.dashnetwork.kitpvp.utils.BlockUtils;
+import xyz.dashnetwork.kitpvp.utils.KitUtils;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
 public class BlockListener implements Listener {
@@ -26,34 +29,39 @@ public class BlockListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Action action = event.getAction();
+        ItemStack hand = player.getItemInHand();
+        boolean rightClick = action.name().contains("RIGHT");
+        boolean inSpawn = SpawnUtils.isInSpawn(player);
+
+        if (CommandBuild.canBuild(player))
+            return;
+
+        if (inSpawn && rightClick && hand.isSimilar(KitUtils.getPotion())) {
+            event.setUseItemInHand(Event.Result.DENY);
+            player.updateInventory();
+        }
+
+        if (!event.hasBlock())
+            return;
+
         Block block = event.getClickedBlock();
+        Material type = block.getType();
 
-        if (!CommandBuild.canBuild(player) && SpawnUtils.isInSpawn(player) && action.name().contains("RIGHT") && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
-            event.setCancelled(true);
-            player.updateInventory();
-        }
-
-        if (!CommandBuild.canBuild(player) && action == Action.RIGHT_CLICK_BLOCK && (block == null || (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN))) {
+        if (rightClick && BlockUtils.isBlockInteractable(type))
             event.setUseInteractedBlock(Event.Result.DENY);
-            player.updateInventory();
-        }
 
-        if (!CommandBuild.canBuild(player) && action == Action.LEFT_CLICK_BLOCK && block != null) {
+        if (action == Action.PHYSICAL && !LazyUtils.anyContains(type.name(), "PLATE", "TRIPWIRE"))
+            event.setUseInteractedBlock(Event.Result.DENY);
+
+        if (type == Material.DRAGON_EGG)
+            event.setUseInteractedBlock(Event.Result.DENY);
+
+        if (action == Action.LEFT_CLICK_BLOCK) {
             Block blockAbove = block.getLocation().add(0, 1, 0).getBlock();
 
             if (blockAbove.getType() == Material.FIRE)
-                event.setCancelled(true);
-        }
-
-        if (!CommandBuild.canBuild(player) && action == Action.PHYSICAL) {
-            Material type = event.getClickedBlock().getType();
-
-            if (!LazyUtils.anyContains(type.name(), "PLATE", "TRIPWIRE"))
                 event.setUseInteractedBlock(Event.Result.DENY);
         }
-
-        if (block != null && block.getType() == Material.DRAGON_EGG)
-            event.setUseInteractedBlock(Event.Result.DENY);
     }
 
     @EventHandler

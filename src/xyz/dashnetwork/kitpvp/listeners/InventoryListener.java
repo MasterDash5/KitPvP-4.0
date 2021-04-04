@@ -7,11 +7,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.kitpvp.gui.KitMenu;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
+
+import java.util.Collection;
 
 public class InventoryListener implements Listener {
 
@@ -35,6 +38,12 @@ public class InventoryListener implements Listener {
                     PlayerInventory inventory = player.getInventory();
                     inventory.setArmorContents(null);
                     inventory.clear();
+
+                    Collection<PotionEffect> activePotionEffects = player.getActivePotionEffects();
+
+                    if (!activePotionEffects.isEmpty())
+                        for (PotionEffect effect : activePotionEffects)
+                            player.removePotionEffect(effect.getType());
 
                     player.updateInventory();
                 } else {

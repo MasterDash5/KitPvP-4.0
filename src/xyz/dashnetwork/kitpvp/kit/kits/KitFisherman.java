@@ -1,5 +1,6 @@
 package xyz.dashnetwork.kitpvp.kit.kits;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -11,20 +12,21 @@ import xyz.dashnetwork.kitpvp.kit.KitEquipment;
 
 import java.util.Collections;
 
-public class KitScout extends Kit {
+public class KitFisherman extends Kit {
 
-    public KitScout() {
-        super(new ItemMaker(Material.SUGAR));
+    public KitFisherman() {
+        super(new ItemMaker(Material.FISHING_ROD));
     }
 
     @Override
     public KitEquipment setupEquipment() {
         ItemStack weapon = new ItemMaker(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build();
+        ItemStack rod = new ItemMaker(Material.FISHING_ROD).unbreakable().build();
         ItemStack helmet = new ItemMaker(Material.CHAINMAIL_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
-        ItemStack chestplate = new ItemMaker(Material.CHAINMAIL_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
-        ItemStack leggings = new ItemMaker(Material.CHAINMAIL_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
+        ItemStack chestplate = new ItemMaker(Material.LEATHER_CHESTPLATE).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
+        ItemStack leggings = new ItemMaker(Material.LEATHER_LEGGINGS).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
         ItemStack boots = new ItemMaker(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
 
-        return new KitEquipment(weapon, null, helmet, chestplate, leggings, boots, Collections.singletonList(new PotionEffect(PotionEffectType.SPEED, 999999, 1)), null);
+        return new KitEquipment(weapon, rod, helmet, chestplate, leggings, boots, Collections.singletonList(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false)), null);
     }
 }

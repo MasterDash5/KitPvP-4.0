@@ -7,21 +7,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 public class SoupListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        PlayerInventory inventory = player.getInventory();
 
         if (player.getGameMode() != GameMode.CREATIVE && event.getAction().name().contains("RIGHT")) {
-            ItemStack hand = inventory.getItemInHand();
+            ItemStack hand = player.getItemInHand();
 
             if (hand != null && hand.getType() == Material.MUSHROOM_SOUP && useSoup(player)) {
                 event.setCancelled(true);
-                inventory.setItemInHand(new ItemStack(Material.BOWL));
+                player.setItemInHand(new ItemStack(Material.BOWL));
             }
         }
     }

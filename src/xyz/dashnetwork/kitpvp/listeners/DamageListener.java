@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import xyz.dashnetwork.kitpvp.api.DuelsAPI;
+import xyz.dashnetwork.kitpvp.commands.CommandBuild;
 import xyz.dashnetwork.kitpvp.utils.KitUtils;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
@@ -19,8 +20,10 @@ public class DamageListener implements Listener {
         if (event.getDamager() instanceof Player) {
             Player damager = (Player) event.getDamager();
 
-            if (event.getFinalDamage() > 0.0D && !DuelsAPI.isInDuel(damager))
+            if (!CommandBuild.canBuild(damager) && !DuelsAPI.isInDuel(damager)) {
+                event.setCancelled(true);
                 KitUtils.setSurvival(damager);
+            }
         }
     }
 

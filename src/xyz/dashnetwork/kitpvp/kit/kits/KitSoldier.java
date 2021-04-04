@@ -3,9 +3,13 @@ package xyz.dashnetwork.kitpvp.kit.kits;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 import xyz.dashnetwork.kitpvp.kit.Kit;
 import xyz.dashnetwork.kitpvp.kit.KitEquipment;
+
+import java.util.Collections;
 
 public class KitSoldier extends Kit {
 
@@ -21,6 +25,6 @@ public class KitSoldier extends Kit {
         ItemStack leggings = new ItemMaker(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
         ItemStack boots = new ItemMaker(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
 
-        return new KitEquipment(weapon, null, helmet, chestplate, leggings, boots, null, null);
+        return new KitEquipment(weapon, null, helmet, chestplate, leggings, boots, Collections.singletonList(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false)), null);
     }
 }

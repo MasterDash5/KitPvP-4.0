@@ -42,7 +42,7 @@ public abstract class Kit {
         equipment.loadKit(player, potions);
 
         if (!players.containsKey(player.getUniqueId()))
-            MessageUtils.message(player, "&6&l» &7You have been given the &c" + getName() + "&7 kit.");
+            MessageUtils.message(player, "&6&l» &7You have been given the &6" + getName() + "&7 kit.");
 
         addPlayer(player, potions);
     }

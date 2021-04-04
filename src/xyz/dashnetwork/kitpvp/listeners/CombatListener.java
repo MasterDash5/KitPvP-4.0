@@ -2,10 +2,7 @@ package xyz.dashnetwork.kitpvp.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +14,7 @@ import xyz.dashnetwork.core.utils.StringUtils;
 import xyz.dashnetwork.kitpvp.KitPvP;
 import xyz.dashnetwork.kitpvp.api.DuelsAPI;
 import xyz.dashnetwork.kitpvp.utils.DeathUtils;
+import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
 import java.util.Map;
 import java.util.UUID;
@@ -57,12 +55,12 @@ public class CombatListener implements Listener {
         }
 
         Player player = (Player) event.getEntity();
+        Entity damager = event.getDamager();
         double finalDamage = event.getFinalDamage();
 
-        if (finalDamage <= 0.0D || player == null || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || DuelsAPI.isInDuel(player))
+        if ((finalDamage <= 0.0D && !(damager instanceof FishHook)) || player == null || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR || DuelsAPI.isInDuel(player))
             return;
 
-        Entity damager = event.getDamager();
         UUID playerUuid = player.getUniqueId();
         UUID damagerUuid = null;
 
@@ -80,8 +78,13 @@ public class CombatListener implements Listener {
         }
 
         if (damagerUuid != null && !DuelsAPI.isInDuel(damagerUuid)) {
-            combatTimer.put(playerUuid, 1200D);
-            combatTimer.put(damagerUuid, 1200D);
+            if (SpawnUtils.isInSpawn(player) || SpawnUtils.isInSpawn(Bukkit.getPlayer(damagerUuid))) {
+                event.setCancelled(true);
+                return;
+            }
+
+            combatTimer.put(playerUuid, 600D);
+            combatTimer.put(damagerUuid, 600D);
 
             combatTarget.put(playerUuid, damagerUuid);
             combatTarget.put(damagerUuid, playerUuid);
