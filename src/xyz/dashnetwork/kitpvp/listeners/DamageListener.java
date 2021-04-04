@@ -1,5 +1,6 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,7 @@ public class DamageListener implements Listener {
         if (event.getDamager() instanceof Player) {
             Player damager = (Player) event.getDamager();
 
-            if (!CommandBuild.canBuild(damager) && !DuelsAPI.isInDuel(damager)) {
+            if (damager.getGameMode() == GameMode.CREATIVE && !CommandBuild.canBuild(damager) && !DuelsAPI.isInDuel(damager)) {
                 event.setCancelled(true);
                 KitUtils.setSurvival(damager);
             }
