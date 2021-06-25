@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 import xyz.dashnetwork.core.bukkit.utils.User;
-import xyz.dashnetwork.kitpvp.listeners.CombatListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +29,22 @@ public class CommandBuild implements CommandExecutor {
             return true;
         }
 
-        if (CombatListener.isInCombat(player)) {
-            MessageUtils.message(player, "&6&l» &7You can't build while in combat!");
-            return true;
-        }
-
-        if (builders.contains(uuid))
-            builders.remove(uuid);
-        else
+        if (!builders.contains(uuid)) {
             builders.add(uuid);
-
-        MessageUtils.message(player, "&6&l» &7You can " + (builders.contains(uuid) ? "now" : "no longer") + " build.");
+            MessageUtils.message(player, "&6&l» &7You can now build.");
+        } else {
+            removeFromBuild(player);
+            MessageUtils.message(player, "&6&l» &7You can no longer build.");
+        }
 
         return true;
     }
 
     public static boolean canBuild(Player player) {
         return builders.contains(player.getUniqueId());
+    }
+
+    public static void removeFromBuild(Player player) {
+        builders.remove(player.getUniqueId());
     }
 }

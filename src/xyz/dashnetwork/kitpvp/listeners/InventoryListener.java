@@ -46,11 +46,16 @@ public class InventoryListener implements Listener {
                             player.removePotionEffect(effect.getType());
 
                     player.updateInventory();
+
+                    Kit kit = Kit.getPlayerKit(player);
+
+                    if (kit != null)
+                        kit.removePlayer(player);
                 } else {
                     Kit kit = Kit.getKit(displayName);
 
                     if (kit != null) {
-                        kit.loadKit(player, event.getClick().isRightClick());
+                        kit.loadKit(player, event.getClick().isLeftClick());
                         player.closeInventory();
                     }
                 }

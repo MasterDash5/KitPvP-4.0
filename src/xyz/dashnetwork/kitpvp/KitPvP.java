@@ -1,27 +1,23 @@
 package xyz.dashnetwork.kitpvp;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.dashnetwork.kitpvp.commands.CommandBuild;
+import xyz.dashnetwork.kitpvp.commands.CommandDamageTicks;
+import xyz.dashnetwork.kitpvp.commands.CommandOldSpawn;
 import xyz.dashnetwork.kitpvp.commands.CommandSpawn;
 import xyz.dashnetwork.kitpvp.kit.kits.*;
 import xyz.dashnetwork.kitpvp.listeners.*;
 import xyz.dashnetwork.kitpvp.tasks.ExperienceTask;
+import xyz.dashnetwork.kitpvp.tasks.ExtinquishTask;
+import xyz.dashnetwork.kitpvp.utils.KitUtils;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 import xyz.dashnetwork.kitpvp.utils.StatsUtils;
 
 public class KitPvP extends JavaPlugin {
-
-    // To Do List (In Order)
-    // TODO: Add more kits
-    // TODO: Make the killer be the person who has done the most damage to the killed
-    // TODO: Random kit sign
-
-    // Assassin
-    // Swapper
-    // Thor
-    // Pyro
-    // Witch
 
     private static KitPvP instance;
 
@@ -40,10 +36,10 @@ public class KitPvP extends JavaPlugin {
 
         PluginManager manager = getServer().getPluginManager();
         manager.registerEvents(new BlockListener(), this);
-        manager.registerEvents(new CombatListener(), this);
+        manager.registerEvents(new DamageListener(), this);
         manager.registerEvents(new CommandListener(), this);
         manager.registerEvents(new CreatureSpawnListener(), this);
-        manager.registerEvents(new DamageListener(), this);
+        manager.registerEvents(new DeathListener(), this);
         manager.registerEvents(new DropListener(), this);
         manager.registerEvents(new HungerListener(), this);
         manager.registerEvents(new InventoryListener(), this);
@@ -58,9 +54,21 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new FishListener(), this);
 
         new ExperienceTask().runTaskTimerAsynchronously(this, 0L, 1L);
+        new ExtinquishTask().runTaskTimerAsynchronously(this, 0L, 1L);
 
         getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("build").setExecutor(new CommandBuild());
+        getCommand("oldspawn").setExecutor(new CommandOldSpawn());
+        getCommand("damageticks").setExecutor(new CommandDamageTicks());
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            GameMode gameMode = player.getGameMode();
+
+            if (gameMode != GameMode.CREATIVE && gameMode != GameMode.SPECTATOR) {
+                SpawnUtils.teleportToSpawn(player);
+                KitUtils.refresh(player);
+            }
+        }
     }
 
     @Override

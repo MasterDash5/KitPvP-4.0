@@ -9,6 +9,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
+import xyz.dashnetwork.kitpvp.tasks.ExtinquishTask;
 
 public class KitUtils {
 
@@ -26,6 +27,8 @@ public class KitUtils {
 
         player.setExp(0.0F);
         player.setLevel(0);
+
+        ExtinquishTask.addToExtinquishQueue(player);
 
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());

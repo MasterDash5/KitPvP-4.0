@@ -20,18 +20,19 @@ public class DeathUtils {
 
         if (killer != null) {
             StatsUtils.addKill(killer);
-            StatsUtils.addDeath(player);
 
             deathMessage(player, killer);
 
-            if (kit != null)
+            if (kit != null && SpawnUtils.isInSpawn(player))
                 refill(killer);
         }
 
-        KitUtils.refresh(player);
-        KitUtils.setSurvival(player);
+        StatsUtils.addDeath(player);
 
         SpawnUtils.teleportToSpawn(player);
+
+        KitUtils.setSurvival(player);
+        KitUtils.refresh(player);
 
         if (kit != null) {
             boolean potions = kit.getPlayers().getOrDefault(player.getUniqueId(), false);
@@ -40,7 +41,7 @@ public class DeathUtils {
         }
     }
 
-    private static void deathMessage(Player player, Player killer) {
+    public static void deathMessage(Player player, Player killer) {
         EntityDamageEvent.DamageCause lastCause = player.getLastDamageCause() == null ? null : player.getLastDamageCause().getCause();
         MessageBuilder builder = new MessageBuilder();
 
@@ -59,6 +60,8 @@ public class DeathUtils {
             builder.append(" &7died trying to hurt ");
         else if (lastCause == EntityDamageEvent.DamageCause.PROJECTILE)
             builder.append(" &7was shot by ");
+        else if (lastCause == EntityDamageEvent.DamageCause.CUSTOM)
+            builder.append(" &7ate shit by ");
         else
             builder.append(" &7has been slain by ");
 
@@ -70,7 +73,7 @@ public class DeathUtils {
                 MessageUtils.message(online, builder.build());
     }
 
-    private static void refill(Player player) {
+    public static void refill(Player player) {
         Kit kit = Kit.getPlayerKit(player);
         ItemStack refillItem = kit != null && kit.isUsingPotions(player) ? KitUtils.getPotion() : KitUtils.getSoup();
         PlayerInventory inventory = player.getInventory();

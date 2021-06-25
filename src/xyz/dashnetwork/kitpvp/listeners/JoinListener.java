@@ -7,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.kitpvp.KitPvP;
@@ -67,20 +64,29 @@ public class JoinListener implements Listener {
 
     public void setupScoreboard(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("info", "dummy");
 
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(ColorUtils.translate("&6&lKitPvP"));
+        Objective sidebarObjective = scoreboard.registerNewObjective("sidebar", "dummy");
+        Objective tabListObjective = scoreboard.registerNewObjective("tablist", "dummy");
 
-        objective.getScore(" ").setScore(9);
-        objective.getScore(ColorUtils.translate("&2&lKills&2: ")).setScore(8);
-        objective.getScore(ColorUtils.translate("&6&lStreak&6: ")).setScore(7);
-        objective.getScore(ColorUtils.translate("&c&lDeaths&c: ")).setScore(6);
-        objective.getScore(ColorUtils.translate("&b&lKDR&b: ")).setScore(5);
-        objective.getScore("  ").setScore(4);
-        objective.getScore(ColorUtils.translate("&d&lCombat&d: ")).setScore(3);
-        objective.getScore("   ").setScore(2);
-        objective.getScore(ColorUtils.translate("&6play.dashnetwork.xyz")).setScore(1);
+        sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sidebarObjective.setDisplayName(ColorUtils.translate("&6&lKitPvP"));
+
+        tabListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+
+        for (Player online : Bukkit.getOnlinePlayers())
+            tabListObjective.getScore(online.getName()).setScore(StatsUtils.getKillStreak(online));
+
+        tabListObjective.getScore(player.getName()).setScore(StatsUtils.getKillStreak(player));
+
+        sidebarObjective.getScore(" ").setScore(9);
+        sidebarObjective.getScore(ColorUtils.translate("&2&lKills&2: ")).setScore(8);
+        sidebarObjective.getScore(ColorUtils.translate("&6&lStreak&6: ")).setScore(7);
+        sidebarObjective.getScore(ColorUtils.translate("&c&lDeaths&c: ")).setScore(6);
+        sidebarObjective.getScore(ColorUtils.translate("&b&lKDR&b: ")).setScore(5);
+        sidebarObjective.getScore("  ").setScore(4);
+        sidebarObjective.getScore(ColorUtils.translate("&d&lCombat&d: ")).setScore(3);
+        sidebarObjective.getScore("   ").setScore(2);
+        sidebarObjective.getScore(ColorUtils.translate("&6play.dashnetwork.xyz")).setScore(1);
 
         Team killCount = scoreboard.registerNewTeam("KillCount");
         killCount.addEntry(ColorUtils.translate("&2&lKills&2: "));
@@ -100,13 +106,22 @@ public class JoinListener implements Listener {
 
         Team combatTimer = scoreboard.registerNewTeam("CombatTimer");
         combatTimer.addEntry(ColorUtils.translate("&d&lCombat&d: "));
-        combatTimer.setSuffix(ColorUtils.translate("&e" + CombatListener.getCombatTime(player)));
+        combatTimer.setSuffix(ColorUtils.translate("&e" + DamageListener.getCombatTime(player)));
 
         player.setScoreboard(scoreboard);
     }
 
     public void updateScoreboard(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
+        Objective tabListObjective = scoreboard.getObjective("tablist");
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            int streak = StatsUtils.getKillStreak(online);
+            Score score = tabListObjective.getScore(online.getName());
+
+            if (score.getScore() != streak)
+                score.setScore(streak);
+        }
 
         Team killCount = scoreboard.getTeam("KillCount");
         int kills = StatsUtils.getKills(player);
@@ -133,7 +148,7 @@ public class JoinListener implements Listener {
             kdrTeam.setSuffix(ColorUtils.translate("&e" + kdr));
 
         Team combatTimer = scoreboard.getTeam("CombatTimer");
-        String combatTime = CombatListener.getCombatTime(player);
+        String combatTime = DamageListener.getCombatTime(player);
 
         if (!combatTime.equals(ColorUtils.strip(combatTimer.getSuffix())))
             combatTimer.setSuffix(ColorUtils.translate("&e" + combatTime));

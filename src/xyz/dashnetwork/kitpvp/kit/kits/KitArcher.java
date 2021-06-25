@@ -23,10 +23,10 @@ public class KitArcher extends Kit {
     public KitEquipment setupEquipment() {
         ItemStack weapon = new ItemMaker(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build();
         ItemStack bow = new ItemMaker(Material.BOW).enchant(Enchantment.ARROW_DAMAGE, 1).enchant(Enchantment.ARROW_INFINITE, 1).unbreakable().build();
-        ItemStack helmet = new ItemMaker(Material.CHAINMAIL_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
-        ItemStack chestplate = new ItemMaker(Material.IRON_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
-        ItemStack leggings = new ItemMaker(Material.IRON_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
-        ItemStack boots = new ItemMaker(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
+        ItemStack helmet = new ItemMaker(Material.CHAINMAIL_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).unbreakable().build();
+        ItemStack chestplate = new ItemMaker(Material.CHAINMAIL_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).unbreakable().build();
+        ItemStack leggings = new ItemMaker(Material.CHAINMAIL_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).unbreakable().build();
+        ItemStack boots = new ItemMaker(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).unbreakable().build();
 
         Map<Integer, ItemStack> miscellaneousItems = new HashMap<>();
         miscellaneousItems.put(9, new ItemMaker(Material.ARROW).build());

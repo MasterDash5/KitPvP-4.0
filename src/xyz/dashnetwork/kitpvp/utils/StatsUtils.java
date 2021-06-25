@@ -3,6 +3,9 @@ package xyz.dashnetwork.kitpvp.utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.core.utils.Channel;
 import xyz.dashnetwork.core.utils.StringUtils;
 import xyz.dashnetwork.kitpvp.KitPvP;
 
@@ -77,7 +80,14 @@ public class StatsUtils {
 
     public static void addKill(Player player) {
         kills.put(player.getUniqueId(), getKills(player) + 1);
-        killstreaks.put(player.getUniqueId(), getKillStreak(player) + 1);
+
+        User user = User.getUser(player);
+        int killstreak = getKillStreak(player) + 1;
+
+        if (killstreak % 5 == 0)
+            MessageUtils.broadcast(Channel.LOCAL, "&6&l» " + user.getDisplayName() + " &7has hit a killstreak of &c" + killstreak + "&7!");
+
+        killstreaks.put(player.getUniqueId(), killstreak);
     }
 
     public static void addDeath(Player player) {

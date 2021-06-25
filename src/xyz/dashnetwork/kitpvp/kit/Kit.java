@@ -7,6 +7,7 @@ import xyz.dashnetwork.core.bukkit.utils.ItemMaker;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Kit {
 
@@ -48,7 +49,9 @@ public abstract class Kit {
     }
 
     public void addPlayer(Player player, boolean potions) {
-        removeFromKits(player);
+        for (Kit kit : kits)
+            kit.removePlayer(player);
+
         players.put(player.getUniqueId(), potions);
     }
 
@@ -84,9 +87,8 @@ public abstract class Kit {
         return null;
     }
 
-    public static void removeFromKits(Player player) {
-        for (Kit kit : kits)
-            kit.removePlayer(player);
+    public static Kit getRandomKit() {
+        return kits.get(ThreadLocalRandom.current().nextInt(kits.size()));
     }
 
     public static List<Kit> getKits() {

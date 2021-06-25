@@ -5,3 +5,5 @@ main: xyz.dashnetwork.kitpvp.KitPvP
 commands:
   spawn:
   build:
+  oldspawn:
+  damageticks:

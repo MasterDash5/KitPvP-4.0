@@ -6,21 +6,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 import xyz.dashnetwork.core.bukkit.utils.PermissionType;
-import xyz.dashnetwork.kitpvp.listeners.DamageListener;
 import xyz.dashnetwork.kitpvp.utils.SpawnUtils;
 
-public class CommandSpawn implements CommandExecutor {
+public class CommandOldSpawn implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!DamageListener.isInCombat(player) || player.hasPermission(PermissionType.OWNER.toPermission())) {
-                SpawnUtils.teleportToSpawn(player);
+            if (player.hasPermission(PermissionType.ADMIN.toPermission())) {
+                SpawnUtils.teleportToOldSpawn(player);
                 MessageUtils.message(player, "&6&l» &7Teleporting...");
             } else
-                MessageUtils.message(player, "&6&l» &7You can't teleport while in combat!");
+                MessageUtils.noPermissions(player);
         }
 
         return true;

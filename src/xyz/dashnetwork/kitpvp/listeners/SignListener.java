@@ -30,10 +30,10 @@ public class SignListener implements Listener {
             String value = getLineText(sign, 1);
 
             if (name.equals("[Kit]")) {
-                Kit kit = Kit.getKit(value);
+                Kit kit = value.equals("Random") ? Kit.getRandomKit() : Kit.getKit(value);
 
                 if (kit != null)
-                    kit.loadKit(player, action.contains("RIGHT"));
+                    kit.loadKit(player, action.contains("LEFT"));
                 else
                     MessageUtils.message(player, "&6&l» &7This kit sign is broken!");
             }

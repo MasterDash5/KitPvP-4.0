@@ -1,5 +1,6 @@
 package xyz.dashnetwork.kitpvp.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -33,7 +35,7 @@ public class BlockListener implements Listener {
         boolean rightClick = action.name().contains("RIGHT");
         boolean inSpawn = SpawnUtils.isInSpawn(player);
 
-        if (CommandBuild.canBuild(player))
+        if (CommandBuild.canBuild(player) && player.getGameMode() != GameMode.SURVIVAL)
             return;
 
         if (inSpawn && rightClick && hand.isSimilar(KitUtils.getPotion())) {
@@ -57,9 +59,9 @@ public class BlockListener implements Listener {
             event.setUseInteractedBlock(Event.Result.DENY);
 
         if (action == Action.LEFT_CLICK_BLOCK) {
-            Block blockAbove = block.getLocation().add(0, 1, 0).getBlock();
+            Block possibleFire = block.getRelative(event.getBlockFace());
 
-            if (blockAbove.getType() == Material.FIRE)
+            if (possibleFire.getType() == Material.FIRE)
                 event.setUseInteractedBlock(Event.Result.DENY);
         }
     }
@@ -68,7 +70,7 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
-        if (!CommandBuild.canBuild(player))
+        if (!CommandBuild.canBuild(player) || player.getGameMode() == GameMode.SURVIVAL)
             event.setCancelled(true);
     }
 
@@ -76,7 +78,7 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
 
-        if (!CommandBuild.canBuild(player))
+        if (!CommandBuild.canBuild(player) || player.getGameMode() == GameMode.SURVIVAL)
             event.setCancelled(true);
     }
 
@@ -85,7 +87,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         Entity entity = event.getRightClicked();
 
-        if (!CommandBuild.canBuild(player) && (entity instanceof ItemFrame || entity instanceof Painting))
+        if ((!CommandBuild.canBuild(player) || player.getGameMode() == GameMode.SURVIVAL) && (entity instanceof ItemFrame || entity instanceof Painting))
             event.setCancelled(true);
     }
 
@@ -95,7 +97,7 @@ public class BlockListener implements Listener {
             Player player = (Player) event.getDamager();
             Entity entity = event.getEntity();
 
-            if (!CommandBuild.canBuild(player) && (entity instanceof ItemFrame || entity instanceof Painting))
+            if ((!CommandBuild.canBuild(player) || player.getGameMode() == GameMode.SURVIVAL) && (entity instanceof ItemFrame || entity instanceof Painting))
                 event.setCancelled(true);
         }
     }
@@ -104,7 +106,12 @@ public class BlockListener implements Listener {
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         Player player = (Player) event.getRemover();
 
-        if (player != null && !CommandBuild.canBuild(player))
+        if (player != null && (!CommandBuild.canBuild(player) || player.getGameMode() == GameMode.SURVIVAL))
             event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onLeavesDecay(LeavesDecayEvent event) {
+        event.setCancelled(true);
     }
 }
