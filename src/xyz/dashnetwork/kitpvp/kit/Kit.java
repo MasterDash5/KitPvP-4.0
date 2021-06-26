@@ -11,11 +11,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Kit {
 
-    private final ItemStack displayItem;
-    private final KitEquipment equipment;
-    private final Map<UUID, Boolean> players;
+    private ItemStack displayItem;
+    private KitEquipment equipment;
+    private Map<UUID, Boolean> players;
 
-    private static final List<Kit> kits = new ArrayList<>();
+    private static List<Kit> kits = new ArrayList<>();
 
     public Kit(ItemMaker displayItem) {
         this.displayItem = displayItem.name("&a" + getName()).flags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS).build();

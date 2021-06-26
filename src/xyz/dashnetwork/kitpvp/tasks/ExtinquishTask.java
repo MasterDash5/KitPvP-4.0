@@ -1,32 +1,35 @@
 package xyz.dashnetwork.kitpvp.tasks;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExtinquishTask extends BukkitRunnable {
 
     private static int ticks = 0;
-    private static Map<Player, Integer> extinguishQueue = new ConcurrentHashMap<>();
+    private static Map<UUID, Integer> extinguishQueue = new ConcurrentHashMap<>();
 
     @Override
     public void run() {
         ticks++;
 
-        for (Map.Entry<Player, Integer> entry : extinguishQueue.entrySet()) {
-            Player player = entry.getKey();
+        for (Map.Entry<UUID, Integer> entry : extinguishQueue.entrySet()) {
+            UUID uuid = entry.getKey();
             Integer time = entry.getValue();
+            Player player = Bukkit.getPlayer(uuid);
 
-            if (ticks >= time + 2) {
+            if (player != null && ticks > time + 1)
                 player.setFireTicks(0);
-                extinguishQueue.remove(player);
-            }
+
+            extinguishQueue.remove(uuid);
         }
     }
 
     public static void addToExtinquishQueue(Player player) {
-        extinguishQueue.put(player, ticks);
+        extinguishQueue.put(player.getUniqueId(), ticks);
     }
 }

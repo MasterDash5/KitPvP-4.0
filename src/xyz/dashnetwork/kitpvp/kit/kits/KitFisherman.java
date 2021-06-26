@@ -20,12 +20,12 @@ public class KitFisherman extends Kit {
 
     @Override
     public KitEquipment setupEquipment() {
-        ItemStack weapon = new ItemMaker(Material.GOLD_SWORD).enchant(Enchantment.DAMAGE_ALL, 3).unbreakable().build();
+        ItemStack weapon = new ItemMaker(Material.WOOD_SWORD).enchant(Enchantment.DAMAGE_ALL, 3).unbreakable().build();
         ItemStack rod = new ItemMaker(Material.FISHING_ROD).enchant(Enchantment.LURE, 5).unbreakable().build();
-        ItemStack helmet = new ItemMaker(Material.CHAINMAIL_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).unbreakable().build();
-        ItemStack chestplate = new ItemMaker(Material.LEATHER_CHESTPLATE).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).unbreakable().build();
-        ItemStack leggings = new ItemMaker(Material.LEATHER_LEGGINGS).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).unbreakable().build();
-        ItemStack boots = new ItemMaker(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).unbreakable().build();
+        ItemStack helmet = new ItemMaker(Material.CHAINMAIL_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
+        ItemStack chestplate = new ItemMaker(Material.LEATHER_CHESTPLATE).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
+        ItemStack leggings = new ItemMaker(Material.LEATHER_LEGGINGS).color(Color.BLUE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
+        ItemStack boots = new ItemMaker(Material.CHAINMAIL_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5).unbreakable().build();
 
         return new KitEquipment(weapon, rod, helmet, chestplate, leggings, boots, Collections.singletonList(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false)), null);
     }

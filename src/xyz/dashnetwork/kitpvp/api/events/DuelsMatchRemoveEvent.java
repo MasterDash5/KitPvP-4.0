@@ -6,8 +6,8 @@ import org.bukkit.event.HandlerList;
 
 public class DuelsMatchRemoveEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
-    private final OfflinePlayer player;
+    private static HandlerList handlers = new HandlerList();
+    private OfflinePlayer player;
 
     public DuelsMatchRemoveEvent(OfflinePlayer player) {
         this.player = player;

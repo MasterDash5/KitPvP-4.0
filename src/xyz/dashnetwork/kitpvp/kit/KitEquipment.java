@@ -14,21 +14,21 @@ import java.util.Map;
 
 public class KitEquipment {
 
-    private final ItemStack weapon;
-    private final ItemStack abilityItem;
+    private ItemStack weapon;
+    private ItemStack kitItem;
 
-    private final ItemStack helmet;
-    private final ItemStack chestplate;
-    private final ItemStack leggings;
-    private final ItemStack boots;
+    private ItemStack helmet;
+    private ItemStack chestplate;
+    private ItemStack leggings;
+    private ItemStack boots;
 
-    private final List<PotionEffect> potionEffects;
+    private List<PotionEffect> potionEffects;
 
-    private final Map<Integer, ItemStack> miscellaneousItems;
+    private Map<Integer, ItemStack> miscellaneousItems;
 
-    public KitEquipment(ItemStack weapon, ItemStack abilityItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
+    public KitEquipment(ItemStack weapon, ItemStack kitItem, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, List<PotionEffect> potionEffects, Map<Integer, ItemStack> miscellaneousItems) {
         this.weapon = weapon;
-        this.abilityItem = abilityItem;
+        this.kitItem = kitItem;
 
         this.helmet = helmet;
         this.chestplate = chestplate;
@@ -45,8 +45,8 @@ public class KitEquipment {
         return weapon;
     }
 
-    public ItemStack getAbilityItem() {
-        return abilityItem;
+    public ItemStack getKitItem() {
+        return kitItem;
     }
 
     public ItemStack[] getArmorContents() {
@@ -71,8 +71,8 @@ public class KitEquipment {
         if (weapon != null)
             inventory.addItem(weapon);
 
-        if (abilityItem != null)
-            inventory.addItem(abilityItem);
+        if (kitItem != null)
+            inventory.addItem(kitItem);
 
         if (miscellaneousItems != null)
             for (Map.Entry<Integer, ItemStack> entry : miscellaneousItems.entrySet())

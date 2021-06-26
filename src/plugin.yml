@@ -1,6 +1,6 @@
 name: KitPvP
 version: "4.0"
-authors: [ MM5, MasterDash5 ]
+authors: [MM5, MasterDash5]
 main: xyz.dashnetwork.kitpvp.KitPvP
 commands:
   spawn:

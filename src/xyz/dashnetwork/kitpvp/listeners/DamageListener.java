@@ -23,8 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DamageListener implements Listener {
 
-    private static final Map<UUID, Double> combatTimer = new ConcurrentHashMap<>();
-    private static final Map<UUID, UUID> combatTarget = new ConcurrentHashMap<>();
+    private static Map<UUID, Double> combatTimer = new ConcurrentHashMap<>();
+    private static Map<UUID, UUID> combatTarget = new ConcurrentHashMap<>();
 
     public DamageListener() {
         new BukkitRunnable() {

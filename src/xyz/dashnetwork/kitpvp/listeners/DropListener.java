@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import xyz.dashnetwork.core.utils.LazyUtils;
+import xyz.dashnetwork.kitpvp.commands.CommandBuild;
 
 public class DropListener implements Listener {
 
@@ -18,7 +19,7 @@ public class DropListener implements Listener {
         Item item = event.getItemDrop();
         Material material = item.getItemStack().getType();
 
-        if (player.getGameMode() != GameMode.CREATIVE && !LazyUtils.anyEquals(material, Material.GLASS_BOTTLE, Material.BOWL))
+        if (!CommandBuild.canBuild(player) && player.getGameMode() != GameMode.CREATIVE && !LazyUtils.anyEquals(material, Material.GLASS_BOTTLE, Material.BOWL))
             event.setCancelled(true);
 
         item.remove();

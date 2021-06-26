@@ -9,7 +9,7 @@ import xyz.dashnetwork.kitpvp.kit.Kit;
 
 public class KitMenu {
 
-    private static final Inventory inventory = Bukkit.createInventory(null, 27, "Select a Kit");
+    private static Inventory inventory = Bukkit.createInventory(null, 27, "Select a Kit");
 
     static {
         int slot = 0;

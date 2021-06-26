@@ -17,21 +17,21 @@ import java.util.UUID;
 
 public class StatsUtils {
 
-    private static final KitPvP plugin = KitPvP.getInstance();
+    private static KitPvP plugin = KitPvP.getInstance();
 
-    private static final File folder = plugin.getDataFolder();
+    private static File folder = plugin.getDataFolder();
 
-    private static final File killsFile = new File(folder, "kills.yml");
-    private static final File deathsFile = new File(folder, "deaths.yml");
-    private static final File killstreaksFile = new File(folder, "killstreaks.yml");
+    private static File killsFile = new File(folder, "kills.yml");
+    private static File deathsFile = new File(folder, "deaths.yml");
+    private static File killstreaksFile = new File(folder, "killstreaks.yml");
 
     private static FileConfiguration killsConfig;
     private static FileConfiguration deathsConfig;
     private static FileConfiguration killstreaksConfig;
 
-    private static final Map<UUID, Integer> kills = new HashMap<>();
-    private static final Map<UUID, Integer> deaths = new HashMap<>();
-    private static final Map<UUID, Integer> killstreaks = new HashMap<>();
+    private static Map<UUID, Integer> kills = new HashMap<>();
+    private static Map<UUID, Integer> deaths = new HashMap<>();
+    private static Map<UUID, Integer> killstreaks = new HashMap<>();
 
     public static void load() {
         folder.mkdirs();

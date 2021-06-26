@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class CommandBuild implements CommandExecutor {
 
-    private static final List<UUID> builders = new ArrayList<>();
+    private static List<UUID> builders = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {

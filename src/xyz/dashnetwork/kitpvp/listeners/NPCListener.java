@@ -2,6 +2,7 @@ package xyz.dashnetwork.kitpvp.listeners;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,13 +16,9 @@ public class NPCListener implements Listener {
     @EventHandler
     public void onUserPacket(UserPacketEvent event) {
         PacketContainer packet = event.getPacket();
-
-        if (!packet.getType().equals(PacketType.Play.Client.USE_ENTITY))
-            return;
-
         Player player = event.getPlayer();
 
-        if (event.getPacketEvent().isPlayerTemporary())
+        if (player instanceof TemporaryPlayer || packet.getType() != PacketType.Play.Client.USE_ENTITY)
             return;
 
         Entity entity = packet.getEntityModifier(player.getWorld()).read(0);

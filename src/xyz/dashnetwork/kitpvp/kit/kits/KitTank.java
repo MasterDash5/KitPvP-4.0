@@ -19,10 +19,10 @@ public class KitTank extends Kit {
 
     @Override
     public KitEquipment setupEquipment() {
-        ItemStack weapon = new ItemMaker(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build();
+        ItemStack weapon = new ItemMaker(Material.STONE_SWORD).enchant(Enchantment.DAMAGE_ALL, 2).unbreakable().build();
         ItemStack helmet = new ItemMaker(Material.IRON_HELMET).unbreakable().build();
-        ItemStack chestplate = new ItemMaker(Material.DIAMOND_CHESTPLATE).unbreakable().build();
-        ItemStack leggings = new ItemMaker(Material.IRON_LEGGINGS).unbreakable().build();
+        ItemStack chestplate = new ItemMaker(Material.DIAMOND_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
+        ItemStack leggings = new ItemMaker(Material.DIAMOND_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).unbreakable().build();
         ItemStack boots = new ItemMaker(Material.IRON_BOOTS).unbreakable().build();
 
         return new KitEquipment(weapon, null, helmet, chestplate, leggings, boots, Collections.singletonList(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false)), null);

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class DuelsAPI {
 
-    private static final List<UUID> inDuel = new ArrayList<>();
+    private static List<UUID> inDuel = new ArrayList<>();
 
     public static void addInDuel(UUID uuid) {
         inDuel.add(uuid);

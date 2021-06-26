@@ -17,23 +17,22 @@ import xyz.dashnetwork.kitpvp.utils.StatsUtils;
 
 public class JoinListener implements Listener {
 
-    private final KitPvP plugin = KitPvP.getInstance();
-    private final BaseComponent[] header;
-    private final BaseComponent[] footer;
+    private BaseComponent[] header;
+    private BaseComponent[] footer;
 
     public JoinListener() {
-        MessageBuilder header = new MessageBuilder();
-        header.append("&6&lDashNetwork\n");
-        header.append("&7Connected to &6&lPvP\n");
+        MessageBuilder headerBuilder = new MessageBuilder();
+        headerBuilder.append("&6&lDashNetwork\n");
+        headerBuilder.append("&7Connected to &6&lPvP\n");
 
-        MessageBuilder footer = new MessageBuilder();
-        footer.append("\n&6play.dashnetwork.xyz");
+        MessageBuilder footerBuilder = new MessageBuilder();
+        footerBuilder.append("\n&6play.dashnetwork.xyz");
 
-        this.header = header.build();
-        this.footer = footer.build();
+        this.header = headerBuilder.build();
+        this.footer = footerBuilder.build();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setPlayerListHeaderFooter(this.header, this.footer);
+            player.setPlayerListHeaderFooter(header, footer);
             setupScoreboard(player);
         }
 
@@ -45,7 +44,7 @@ public class JoinListener implements Listener {
                     updateScoreboard(player);
             }
 
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        }.runTaskTimerAsynchronously(KitPvP.getInstance(), 0L, 1L);
     }
 
     @EventHandler
