@@ -60,7 +60,7 @@ public class DamageListener implements Listener {
             return;
         }
 
-        if (!(entity instanceof Player) || (finalDamage <= 0.0D && !(damager instanceof FishHook)) || DuelsAPI.isInDuel(playerUuid))
+        if (!(entity instanceof Player) || (finalDamage <= 0.0D && !(damager instanceof FishHook) && !(damager instanceof Snowball)) || DuelsAPI.isInDuel(playerUuid))
             return;
 
         Player player = (Player) event.getEntity();
@@ -112,10 +112,15 @@ public class DamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof EnderCrystal) {
+        Entity entity = event.getEntity();
+
+        if (entity instanceof EnderCrystal) {
             event.setCancelled(true);
             return;
         }
+
+        if (!(entity instanceof Player))
+            return;
 
         Player player = (Player) event.getEntity();
         double finalDamage = event.getFinalDamage();

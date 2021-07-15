@@ -2,6 +2,8 @@ package xyz.dashnetwork.kitpvp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,6 +54,7 @@ public class KitPvP extends JavaPlugin {
         manager.registerEvents(new WeatherListener(), this);
         manager.registerEvents(new FallListener(), this);
         manager.registerEvents(new FishListener(), this);
+        manager.registerEvents(new NinjaListener(), this);
 
         new ExperienceTask().runTaskTimerAsynchronously(this, 0L, 1L);
         new ExtinquishTask().runTaskTimerAsynchronously(this, 0L, 1L);
@@ -61,10 +64,12 @@ public class KitPvP extends JavaPlugin {
         getCommand("oldspawn").setExecutor(new CommandOldSpawn());
         getCommand("damageticks").setExecutor(new CommandDamageTicks());
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            GameMode gameMode = player.getGameMode();
+        for (Entity entity : SpawnUtils.getWorld().getEntities())
+            if (entity.getType() == EntityType.DROPPED_ITEM)
+                entity.remove();
 
-            if (gameMode != GameMode.CREATIVE && gameMode != GameMode.SPECTATOR) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getGameMode() == GameMode.SURVIVAL) {
                 SpawnUtils.teleportToSpawn(player);
                 KitUtils.refresh(player);
             }
